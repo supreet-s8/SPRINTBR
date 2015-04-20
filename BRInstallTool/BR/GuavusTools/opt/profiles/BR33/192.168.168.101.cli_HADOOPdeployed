@@ -1,0 +1,63 @@
+# ntp
+no ntp disable
+ssh client global host-key-check no
+ntp server 192.168.168.64
+no ntp server 192.168.168.64 disable
+ntpdate 192.168.168.64
+ntp server 192.168.168.65
+no ntp server 192.168.168.65 disable
+ntpdate 192.168.168.65
+# snmp
+snmp-server enable
+snmp-server host 10.134.213.196 traps version 2c guavus 
+snmp-server listen enable
+snmp-server location PlymouthMeeting
+snmp-server community guavus ro
+snmp-server traps community guavus
+snmp-server traps event HDFS-namenode-status
+snmp-server traps event collector-data-resume
+snmp-server traps event cpu-util-high
+snmp-server traps event cpu-util-ok
+snmp-server traps event disk-io-high
+snmp-server traps event disk-space-low
+snmp-server traps event disk-space-ok
+snmp-server traps event insta-adaptor-down
+snmp-server traps event interface-down
+snmp-server traps event interface-up
+snmp-server traps event memusage-high
+snmp-server traps event netusage-high
+snmp-server traps event no-collector-data
+snmp-server traps event paging-high
+snmp-server traps event paging-ok
+snmp-server traps event process-crash
+snmp-server traps event process-exit
+snmp-server traps event process-relaunched
+snmp-server traps event test-trap
+snmp-server traps event unexpected-shutdown
+stats alarm disk_io enable
+stats alarm intf_util enable
+stats alarm memory_pct_used enable
+snmp-server user admin v3 enable
+wr mem
+# hadoop
+pmx register backup_hdfs
+pmx register hadoop
+pmx register drbd
+pmx register oozie
+internal set create - /tps/process/hadoop/attribute/mapred.child.java.opts/value value string "-Xmx4096m -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps"
+pmx set backup_hdfs namenode UNINIT
+pmx set hadoop client 192.168.168.101
+pmx set hadoop client 192.168.168.102
+pmx set hadoop slave 192.168.168.103
+pmx set hadoop slave 192.168.168.104
+pmx set hadoop slave 192.168.168.105
+pmx set hadoop slave 192.168.168.106
+pmx set hadoop master 192.168.168.113
+pmx set hadoop namenode UNINIT
+pmx set hadoop oozieServer 192.168.168.113
+# drbd
+pmx set drbd hosttwo BR33-COL2
+pmx set drbd hosttwoip 192.168.168.102
+pmx set drbd hostone BR33-COL1
+pmx set drbd hostoneip 192.168.168.101
+pmx set drbd waittime 300

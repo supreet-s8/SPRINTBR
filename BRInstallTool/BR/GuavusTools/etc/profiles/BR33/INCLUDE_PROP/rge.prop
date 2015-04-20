@@ -1,0 +1,20 @@
+#
+# Rubix Configuration
+# Community String
+# # Site Name
+rge.server.location=PlymouthMeeting
+rge.ips.rubix=192.168.168.109,192.168.168.110,192.168.168.111,192.168.168.112
+rge.ips.rge=192.168.168.101,192.168.168.102
+rge.ipsPort.rge=192.168.168.109[7800],192.168.168.110[7800]
+rge.port.rubix=4010
+rge.port.rge=4020
+rge.insta.ip=192.168.168.114
+rge.customerName=NTT
+rge.timezone=GMT
+rge.CertificatePath=/data/certificate/br_cert.pem
+rge.cookiedomain=.guavus.com
+rge.db.rubix=rubix
+rge.db.rge=rge
+rge.hostname.rubix=bizreflex-br33
+rge.hostname.rge=rge-br33
+uemail=jatin.gupta@gmail.com

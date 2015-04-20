@@ -1,0 +1,8 @@
+###################################
+# DRBD # Hostnames and IP addresses
+###################################
+drbd.hostone.hostname=WMTPPAAA-CMDS-A-AL-GVS09-01
+drbd.hostone.ip=192.168.0.67
+drbd.hosttwo.hostname=WMTPPAAA-CMDS-A-AL-GVS10-01
+drbd.hosttwo.ip=192.168.0.70
+

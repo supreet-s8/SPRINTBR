@@ -1,0 +1,10 @@
+#######################
+# Cluster Configuration
+#######################
+cluster.CMDS-COSPGV-COL.name=cospgvcnp0-vip
+cluster.CMDS-COSPGV-COL.interface=eth0
+cluster.CMDS-COSPGV-COL.expected-nodes=2
+cluster.CMDS-COSPGV-COL.master.address=10.136.239.57
+cluster.CMDS-COSPGV-COL.master.subnet=255.255.255.0
+cluster.CMDS-COSPGV-COL.master.interface=eth0
+

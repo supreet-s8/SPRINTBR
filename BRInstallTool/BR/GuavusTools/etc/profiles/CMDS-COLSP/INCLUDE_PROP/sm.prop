@@ -1,0 +1,6 @@
+############
+# SM Config
+############
+# Master Name node,standby name node of Aggregation Center, 
+# Collection Center and Insta node.
+sm.instaNode.ip=10.136.239.59

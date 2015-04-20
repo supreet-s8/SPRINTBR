@@ -1,0 +1,34 @@
+# Routing configuration
+#ip.default-gateway=10.168.206.1
+ip.name-server.1=10.136.235.71
+ip.name-server.2=10.215.136.71
+ip.name-server.3=10.194.80.114
+
+# Host mappings
+ip.host.cospgvcnp1=10.136.239.41
+ip.host.cospgvcnp2=10.136.239.42
+ip.host.cospgvmap1=10.136.239.43
+ip.host.cospgvmap2=10.136.239.44
+ip.host.cospgvmap3=10.136.239.45
+ip.host.cospgvmap4=10.136.239.46
+ip.host.cospgvmap5=10.136.239.47
+ip.host.cospgvmap6=10.136.239.48
+ip.host.cospgvccp1=10.136.239.49
+ip.host.cospgvccp2=10.136.239.50
+ip.host.cospgvuip1=10.136.239.51
+ip.host.cospgvuip2=10.136.239.52
+ip.host.cospgvuip3=10.136.239.53
+ip.host.cospgvuip4=10.136.239.54
+ip.host.cospgvmnp1=10.136.239.55
+ip.host.cospgvmnp2=10.136.239.56
+
+# VIPs
+ip.host.cospgvcnp0=10.136.239.57
+ip.host.cospgvuip0=10.136.239.58
+ip.host.cospgvccp0=10.136.239.59
+
+# Host Mappings External
+
+
+# Turn on/off static host mapping
+ip.map-hostname=no

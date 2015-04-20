@@ -1,0 +1,6 @@
+#######################
+# Cluster Configuration
+#######################
+samplicate.state=enable
+samplicate.port=1234
+samplicate.socketBufferSize=12

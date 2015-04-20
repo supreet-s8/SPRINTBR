@@ -1,0 +1,8 @@
+###################################
+# DRBD # Hostnames and IP addresses
+###################################
+drbd.hostone.hostname=BR33-COL1
+drbd.hostone.ip=192.168.168.101
+drbd.hosttwo.hostname=BR33-COL2
+drbd.hosttwo.ip=192.168.168.102
+

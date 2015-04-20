@@ -1,0 +1,227 @@
+# interface
+bond icnb
+interface eth6 bond icnb
+no interface eth6 shutdown
+no interface eth6 dhcp
+interface eth7 bond icnb
+no interface eth7 shutdown
+no interface eth7 dhcp
+interface icnb ip address 192.168.0.74 255.255.255.0
+no interface icnb shutdown
+no interface icnb dhcp
+interface icnb comment "Inter Chassis Network"
+# ip
+no ip map-hostname
+ip name-server 10.168.135.70
+ip filter chain INPUT rule append tail target ACCEPT dup-delete in-intf lo
+ip host vzwlabgvccp2 10.168.213.129
+ip host VZWLAB-CMDS-A-AL-GVS09-02 192.168.0.83
+ip host vzwlabgvccp1 10.168.213.108
+ip host vzwlabgvuip1 10.168.213.111
+ip host vzwlabgvccp0 10.168.213.146
+ip host VZWLAB-CMDS-A-AL-GVS12-01 192.168.0.77
+ip host vzwlabgvmap1 10.168.213.105
+ip host vzwlabgvmap2 10.168.213.126
+ip host VZWLAB-CMDS-A-AL-GVS12-02 192.168.0.93
+ip host vzwlabgvuip3 10.168.213.132
+ip host vzwlabgvcnp1 10.168.213.102
+ip host vzwlabgvuip4 10.168.213.135
+ip host VZWLAB-CMDS-A-AL-GVS13-02 192.168.0.96
+ip host GVS-VZWLAB-DC-COL1 192.168.0.71
+ip host VZWLAB-CMDS-A-AL-GVS11-02 192.168.0.90
+ip host VZWLAB-CMDS-A-AL-GVS09-01 192.168.0.67
+ip host vzwlabgvuip2 10.168.213.114
+ip host vzwlabgvmap3 10.168.213.120
+ip host VZWLAB-CMDS-A-AL-GVS10-01 192.168.0.70
+ip host GVS-VZWLAB-DC-COL2 192.168.0.87
+ip host vzwlabgvcnp2 10.168.213.123
+ip host VZWLAB-CMDS-A-AL-GVS13-01 192.168.0.80
+ip host VZWLAB-CMDS-A-AL-GVS11-01 192.168.0.74
+ip host vzwlabgvcnp0 10.168.213.144
+ip host vzwlabgvmap4 10.168.213.141
+ip host VZWLAB-CMDS-A-AL-GVS10-02 192.168.0.86
+ip host vzwlabgvuip0 10.168.213.145
+hostname VZWLAB-CMDS-A-AL-GVS11-01
+no web enable
+no web http enable
+banner login "WARNING NOTICE This system is for the use of authorized users only. Individuals using this system without authority, or in excess of their authority, are subject to having all of their activities on this system monitored and recorded by system personnel. In the course of monitoring individuals improperly using this system, or in the course of system maintenance, the activities of authorized users may also be monitored. Anyone using this system expressly consents to such monitoring and is advised that if such monitoring reveals possible evidence of criminal activity, system personnel may provide the evidence of such monitoring to law enforcement officials."
+ip filter chain INPUT policy ACCEPT
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 13 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 13 icmp-code 0
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 14 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 14 icmp-code 0
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 17 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 17 icmp-code 0
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 18 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 18 icmp-code 0
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50030
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50070
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50090
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50075
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 13
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 14
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 17
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 18
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 13
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 14
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 17
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 18
+ip filter chain INPUT rule append tail target DROP protocol udp dest-port 5353
+ip filter enable
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.86 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.86 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.86 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.77 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.77 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.77 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.90 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.90 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.90 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.96 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.96 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.96 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.74 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.74 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.74 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.93 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.93 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.93 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.70 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.70 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.70 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.80 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.80 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.80 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.67 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.67 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.67 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.83 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.83 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.83 /32
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50060
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50071
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50076
+# user
+no username sytchgrp disable
+username sytchgrp password 0 Gu@vu$!!
+username sytchgrp capability monitor
+no username noc1grp disable
+username noc1grp password 0 Gu@vu$!!
+username noc1grp capability monitor
+no username sanetest disable
+username sanetest password 0 Gu@vu$!!
+username sanetest capability monitor
+username monitor disable
+no username swtchgrp disable
+username swtchgrp password 0 Gu@vu$!!
+username swtchgrp capability monitor
+username cmcclient disable
+username cmcrendev disable
+no username dagosmi disable
+username dagosmi password Gu@vu$!!
+username dagosmi capability admin
+no username root disable
+username root password 0 Gu@vu$!!
+no username srenggrp disable
+username srenggrp password 0 Gu@vu$!!
+username srenggrp capability monitor
+no username sstchgrp disable
+username sstchgrp password 0 Gu@vu$!!
+username sstchgrp capability monitor
+no username wdscgrp disable
+username wdscgrp password 0 Gu@vu$!!
+username wdscgrp capability monitor
+no username admin disable
+username admin password 0 Gu@vu$!!
+username admin capability admin
+no username VzWAdmin disable
+username VzWAdmin password 0 Gu@vu$!!
+username VzWAdmin capability admin
+no username noc3grp disable
+username noc3grp password 0 Gu@vu$!!
+username noc3grp capability monitor
+no username samuser disable
+username samuser password 0 Gu@vu$!!
+username samuser capability admin
+no username rfenggrp disable
+username rfenggrp password 0 Gu@vu$!!
+username rfenggrp capability monitor
+no username perfgrp disable
+username perfgrp password 0 Gu@vu$!!
+username perfgrp capability monitor
+no username dsrvcgrp disable
+username dsrvcgrp password 0 Gu@vu$!!
+username dsrvcgrp capability monitor
+no username noc2grp disable
+username noc2grp password 0 Gu@vu$!!
+username noc2grp capability monitor
+# ntp
+no ntp disable
+clock timezone UTC
+ssh client global host-key-check no
+ntp server 135.1.64.124
+no ntp server 135.1.64.124 disable
+ntpdate 135.1.64.124
+aaa authentication attempts lockout max-fail 3
+aaa authentication attempts lockout unlock-time -1
+no virt enable
+no pm process insta launch enable
+no pm process insta launch relaunch auto
+no pm process insta launch auto
+no snmp-server traps event insta-adaptor-down
+pm process insta terminate
+# snmp
+no snmp-server community public
+snmp-server community atlas ro
+snmp-server enable
+snmp-server enable communities
+snmp-server enable traps
+snmp-server listen enable
+snmp-server location PlymouthMeeting
+snmp-server traps community atlas
+snmp-server traps event HDFS-namenode-status
+snmp-server traps event no-collector-data
+snmp-server traps event collector-data-resume
+snmp-server traps event collector-dropped-flow-alarm-cleared
+snmp-server traps event collector-dropped-flow-thres-crossed
+snmp-server traps event cpu-util-high
+snmp-server traps event cpu-util-ok
+snmp-server traps event disk-io-high
+snmp-server traps event disk-space-low
+snmp-server traps event disk-space-ok
+snmp-server traps event interface-down
+snmp-server traps event interface-up
+snmp-server traps event memusage-high
+snmp-server traps event memusage-ok
+snmp-server traps event netusage-high
+snmp-server traps event netusage-ok
+snmp-server traps event paging-high
+snmp-server traps event paging-ok
+snmp-server traps event process-crash
+snmp-server traps event process-relaunched
+snmp-server traps event test-trap
+snmp-server traps event unexpected-shutdown
+stats alarm disk_io enable
+stats alarm intf_util enable
+stats alarm fs_mnt falling clear-threshold 10
+stats alarm fs_mnt falling error-threshold 7
+stats alarm memory_pct_used enable
+stats alarm cpu_util_indiv rate-limit count long 250
+stats alarm cpu_util_indiv rate-limit count medium 150
+stats alarm fs_mnt rising error-threshold 7
+stats alarm disk_io rising error-threshold 81920
+stats alarm disk_io rising clear-threshold 51200
+stats alarm intf_util rising error-threshold 1572864000
+stats alarm intf_util rising clear-threshold 1258291200
+stats alarm paging rising error-threshold 16000
+internal set modify - /stats/config/alarm/cpu_util_indiv/trigger/node_pattern value name /system/cpu/all/busy_pct
+internal set modify - /stats/config/sample/disk_io/interval value duration_sec 3600
+internal set create - "/stats/config/alarm/fs_mnt/trigger/node_patterns/\\/system\/fs\\/mount\/\\\\\\/data\\/bytes-percent-free" value name "/system/fs/mount/\/data/bytes-percent-free"
+stats alarm cpu_util_indiv rising clear-threshold 85
+stats alarm cpu_util_indiv rising error-threshold 90
+internal set modify - /stats/config/sample/disk_io/interval value duration_sec 3600
+no snmp-server host 10.134.213.194 disable
+snmp-server host 10.134.213.194 traps version 2c atlas
+no snmp-server host 10.136.235.67 disable
+snmp-server host 10.136.235.67 traps version 2c atlas
+pm process statsd restart

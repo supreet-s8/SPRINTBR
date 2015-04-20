@@ -1,0 +1,288 @@
+# ntp
+no ntp disable
+ssh client global host-key-check no
+ntp server 192.168.168.64
+no ntp server 192.168.168.64 disable
+ntpdate 192.168.168.64
+ntp server 192.168.168.65
+no ntp server 192.168.168.65 disable
+ntpdate 192.168.168.65
+# snmp
+snmp-server enable
+snmp-server host 10.134.213.196 traps version 2c guavus 
+snmp-server listen enable
+snmp-server location PlymouthMeeting
+snmp-server community guavus ro
+snmp-server traps community guavus
+snmp-server traps event HDFS-namenode-status
+snmp-server traps event collector-data-resume
+snmp-server traps event cpu-util-high
+snmp-server traps event cpu-util-ok
+snmp-server traps event disk-io-high
+snmp-server traps event disk-space-low
+snmp-server traps event disk-space-ok
+snmp-server traps event insta-adaptor-down
+snmp-server traps event interface-down
+snmp-server traps event interface-up
+snmp-server traps event memusage-high
+snmp-server traps event netusage-high
+snmp-server traps event no-collector-data
+snmp-server traps event paging-high
+snmp-server traps event paging-ok
+snmp-server traps event process-crash
+snmp-server traps event process-exit
+snmp-server traps event process-relaunched
+snmp-server traps event test-trap
+snmp-server traps event unexpected-shutdown
+stats alarm disk_io enable
+stats alarm intf_util enable
+stats alarm memory_pct_used enable
+snmp-server user admin v3 enable
+wr mem
+# cluster
+cluster id col1
+cluster name BRRUB
+cluster interface eth0
+cluster expected-nodes 6
+cluster master address vip 192.168.168.115 /23
+cluster master interface eth0
+cluster enable
+# rubixui
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute tomcatClusterInfo value "<Member className=\"org.apache.catalina.tribes.membership.StaticMember\" port=\"4010\" host=\"192.168.168.110\" uniqueId=\"{1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1}\"/><Member className=\"org.apache.catalina.tribes.membership.StaticMember\" port=\"4010\" host=\"192.168.168.112\" uniqueId=\"{1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1}\"/><Member className=\"org.apache.catalina.tribes.membership.StaticMember\" port=\"4010\" host=\"192.168.168.109\" uniqueId=\"{1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1}\"/><Member className=\"org.apache.catalina.tribes.membership.StaticMember\" port=\"4010\" host=\"192.168.168.101\" uniqueId=\"{1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1}\"/><Member className=\"org.apache.catalina.tribes.membership.StaticMember\" port=\"4010\" host=\"192.168.168.102\" uniqueId=\"{1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1}\"/>"
+rubix delete-app bizreflex_rubix
+rubix add-app bizreflex_rubix config-xml /opt/tms/bizreflex-bizreflex3.3/WEB-INF/classes/rubixConfiguration.xml
+rubix modify-app bizreflex_rubix add-instance 0
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute JMXPORT value "8089"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute SCHEDULERMAXSEGMENTDURATION value "86400"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute applyServicePermission value "true"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute blazedsLoggingLevel value "INFO"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute c3p0LoggingLevel value "INFO"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute cacheDiskstore value "/data/diskstore"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute channelReceiverPort value "4010"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute configFileProperty value "/data/configs/EntityConfig/"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute connectorPort value "8080"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute connectorPortAJP value "8009"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute customNamingStrategyEnabledHibernate value "true"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute flexLoggingLevel value "INFO"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute initialJavaHeapSize value "19g"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute isCaseInsensitive value "true"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute jgroupsLoggingLevel value "INFO"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute keyStoreName value "/sso.jks"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute maxLogHistory value "30"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute moduleTimeDumpDelta value "60"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute nonInteractionCubesPrefetchOnly value "true"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute percentileOnlyAsBased value "false"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute pojoNameForCustomTablename value "IdNameMap;Filter;EntityNameToAsPRIRule;AsProspectRule;AsBlacklistRule;BRConfigurationData;"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute pojoNamesToUseHibernateSequence value ""
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute promptChangePasswd value "true"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute prospectBlacklistDbpollInterval value "30000"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute protectedFileExtension value "swf"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute reloadPolicyRetryInterval value "3600"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute reportRubixNode value "true"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute requestResponseLoggingLevel value "INFO"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute rootLoggingLevel value "INFO"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute samlValidator value "com.guavus.rubix.user.management.sso.SAML20Validator"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute schedulerStartDelay value "260"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute serverPort value "8005"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute solutionDBVersion value "0.0"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute solutionName value "bizreflex"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute staticSecurityManagerEnabledShiroEnv value "false"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute tomcatClusterName value "tomcat-cluster"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute tomcatInstanceMaxSize value "19g"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute umDBVersion value "0.0"
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute unRestrictedResources value "main.swf"
+rubix modify-app bizreflex_rubix modify-instance 0 set attribute JMXAUTHENTICATE value "false"
+rubix modify-app bizreflex_rubix modify-instance 0 set attribute JMXSSL value "false"
+rubix modify-app bizreflex_rubix modify-instance 0 set attribute MAXPERMSIZE value "512m"
+rubix modify-app bizreflex_rubix modify-instance 0 set attribute SKIPUPDATECHECK value "true"
+rubix modify-app bizreflex_rubix modify-instance 0 set attribute docBase value "/data/instances/bizreflex_rubix/0/app"
+rubix modify-app bizreflex_rubix modify-instance 0 set attribute nodeUniqueIdentifier value "BR33-RUB3"
+rubix modify-app bizreflex_rubix modify-instance 0 set attribute redirectPort value "8443"
+rubix modify-app bizreflex_rubix modify-instance 0 set attribute runMode value "insta"
+rubix modify-app bizreflex_rubix set adv-attribute DEFAULTUNCOMPRESSEDSUBSCRIBERCOUNT value "16"
+rubix modify-app bizreflex_rubix set adv-attribute ForceRunInSingleMode value "false"
+rubix modify-app bizreflex_rubix set adv-attribute INSTACOMBOPOINTS value "744"
+rubix modify-app bizreflex_rubix set adv-attribute JgroupsConfigfile value "rubix-jgroups.xml"
+rubix modify-app bizreflex_rubix set adv-attribute L2CacheClusterName value "Bizreflex-Cluster-Infinispan"
+rubix modify-app bizreflex_rubix set adv-attribute MemoryRetentionBuffer value "0"
+rubix modify-app bizreflex_rubix set adv-attribute NoOfDecimalPlacesForRoundingInStats value "5"
+rubix modify-app bizreflex_rubix set adv-attribute RRCacheEvictionCount value "5000"
+rubix modify-app bizreflex_rubix set adv-attribute RunSchedulerOnlyOnCoordinator value "true"
+rubix modify-app bizreflex_rubix set adv-attribute SCHEDULERVARIABLEGRANULARITYMAP value "1d:217;7d:31;1M:6"
+rubix modify-app bizreflex_rubix set adv-attribute VariableRetentionMap value "5m:51840;1h:1488;1d:186;7d:0;1M:0"
+rubix modify-app bizreflex_rubix set adv-attribute adapterLifo value "true"
+rubix modify-app bizreflex_rubix set adv-attribute adapterMaxIdle value "-1"
+rubix modify-app bizreflex_rubix set adv-attribute adapterMaxWait value "0"
+rubix modify-app bizreflex_rubix set adv-attribute adapterMaxactive value "5"
+rubix modify-app bizreflex_rubix set adv-attribute adapterMinEvictableIdleTimeMillis value "0"
+rubix modify-app bizreflex_rubix set adv-attribute adapterMinIdle value "-1"
+rubix modify-app bizreflex_rubix set adv-attribute adapterNumTestsPerEvictionRun value "10"
+rubix modify-app bizreflex_rubix set adv-attribute adapterSoftMinEvictableIdleTimeMillis value "0"
+rubix modify-app bizreflex_rubix set adv-attribute adapterTestOnBorrow value "true"
+rubix modify-app bizreflex_rubix set adv-attribute adapterTestOnReturn value "false"
+rubix modify-app bizreflex_rubix set adv-attribute adapterTestWhileIdle value "true"
+rubix modify-app bizreflex_rubix set adv-attribute adapterTimeBetweenEvictionRunsMillis value "1000"
+rubix modify-app bizreflex_rubix set adv-attribute adapterWhenExhaustedAction value "1"
+rubix modify-app bizreflex_rubix set adv-attribute aggregateEvictionDiskThresholdCount value "5"
+rubix modify-app bizreflex_rubix set adv-attribute aggregateEvictionThresholdCount value "5"
+rubix modify-app bizreflex_rubix set adv-attribute aggregateFromTimeseriesData value "true"
+rubix modify-app bizreflex_rubix set adv-attribute aggregateThreadPoolSize value "16"
+rubix modify-app bizreflex_rubix set adv-attribute allowedDimensionSetDiff value "0"
+rubix modify-app bizreflex_rubix set adv-attribute appendCacheIdentifierPopulatingTimeseries value "false"
+rubix modify-app bizreflex_rubix set adv-attribute binClassToBinSrcChckIntrvl value "300"
+rubix modify-app bizreflex_rubix set adv-attribute byteBufferTimeseriesEvictionDiskThresholdCount value "320"
+rubix modify-app bizreflex_rubix set adv-attribute byteBufferTimeseriesEvictionThresholdCount value "360"
+rubix modify-app bizreflex_rubix set adv-attribute cacheOverflowToDisk value "false"
+rubix modify-app bizreflex_rubix set adv-attribute cachePersistToDisk value "true"
+rubix modify-app bizreflex_rubix set adv-attribute cachePreloadEnable value "true"
+rubix modify-app bizreflex_rubix set adv-attribute checkSearchCubeTimeGran value "false"
+rubix modify-app bizreflex_rubix set adv-attribute clusterCheckCount value "60"
+rubix modify-app bizreflex_rubix set adv-attribute clusterCheckInterval value "2000"
+rubix modify-app bizreflex_rubix set adv-attribute clusterRequestTimeout value "1800000"
+rubix modify-app bizreflex_rubix set adv-attribute clusterVirtualNodesCount value "100"
+rubix modify-app bizreflex_rubix set adv-attribute connectionProviderClass value "org.hibernate.connection.C3P0ConnectionProvider"
+rubix modify-app bizreflex_rubix set adv-attribute currentSessionContextClass value "thread"
+rubix modify-app bizreflex_rubix set adv-attribute dayLevelCacheDuration value "2"
+rubix modify-app bizreflex_rubix set adv-attribute defaultAggregationInterval value "-1"
+rubix modify-app bizreflex_rubix set adv-attribute defaultBinSource value ""
+rubix modify-app bizreflex_rubix set adv-attribute defaultSyncPolicy value "com.guavus.rubix.cache.sync.DefaultSyncPolicy"
+rubix modify-app bizreflex_rubix set adv-attribute dialect value "org.hibernate.dialect.HSQLDialect"
+rubix modify-app bizreflex_rubix set adv-attribute diskPersistGranularityRetentionCombinePoint value "5m:288;1h:24;3h:8;1d:30;7d:4;1M:1"
+rubix modify-app bizreflex_rubix set adv-attribute diskRetentionPeriod value "5m:62496;1h:1488;1d:217;7d:31;1M:7"
+rubix modify-app bizreflex_rubix set adv-attribute distributedConnectionDriverClass value "org.postgresql.Driver"
+rubix modify-app bizreflex_rubix set adv-attribute distributedConnectionUrl value "jdbc:postgresql://192.168.168.114:5432/rubix"
+rubix modify-app bizreflex_rubix set adv-attribute distributedDialect value "com.guavus.rubix.hibernate.dialect.PostgreSQLCustomDialect"
+rubix modify-app bizreflex_rubix set adv-attribute distributionResponseDelayInterval value "5"
+rubix modify-app bizreflex_rubix set adv-attribute enableFilterCachingInRubixCache value "true"
+rubix modify-app bizreflex_rubix set adv-attribute gaugeCubeGranularity value "300"
+rubix modify-app bizreflex_rubix set adv-attribute geometricProgressionPolicyCommonRatio value "2"
+rubix modify-app bizreflex_rubix set adv-attribute haJDBCBalancer value "round-robin"
+rubix modify-app bizreflex_rubix set adv-attribute haJDBCDialect value "HSQLDB"
+rubix modify-app bizreflex_rubix set adv-attribute haJDBCMetaDataCache value "none"
+rubix modify-app bizreflex_rubix set adv-attribute haJDBCTransactionMode value "serial"
+rubix modify-app bizreflex_rubix set adv-attribute hasRubixCubesWithNoMeasures value "true"
+rubix modify-app bizreflex_rubix set adv-attribute hibernateCacheInfinispanCfg value "cluster-infinispan-configs.xml"
+rubix modify-app bizreflex_rubix set adv-attribute hibernateCacheRegionFactoryClass value "org.hibernate.cache.infinispan.InfinispanRegionFactory"
+rubix modify-app bizreflex_rubix set adv-attribute hibernateConnectionDriverClass value "org.hsqldb.jdbcDriver"
+rubix modify-app bizreflex_rubix set adv-attribute hibernateConnectionUrl value "jdbc:hsqldb:mem:rubix"
+rubix modify-app bizreflex_rubix set adv-attribute hibernateQueryCache value "false"
+rubix modify-app bizreflex_rubix set adv-attribute hibernateRubixFile value "um.sql"
+rubix modify-app bizreflex_rubix set adv-attribute hibernateSecondLevelCache value "true"
+rubix modify-app bizreflex_rubix set adv-attribute hibernateSolutionFile value "bizreflex.sql"
+rubix modify-app bizreflex_rubix set adv-attribute hourLevelCacheDuration value "7"
+rubix modify-app bizreflex_rubix set adv-attribute ignrdDimensionListFile value "/ignoredDimensionList.txt"
+rubix modify-app bizreflex_rubix set adv-attribute inMemHibernateCacheProviderClass value "org.hibernate.cache.NoCacheProvider"
+rubix modify-app bizreflex_rubix set adv-attribute inMemHibernateSecondLevelCache value "false"
+rubix modify-app bizreflex_rubix set adv-attribute infinispanJgroupConfigFile value "rubix-jgroups.xml"
+rubix modify-app bizreflex_rubix set adv-attribute instaResponseTimeout value "2"
+rubix modify-app bizreflex_rubix set adv-attribute isInstaQueryRedirectEnabled value "true"
+rubix modify-app bizreflex_rubix set adv-attribute lastModified value "43200"
+rubix modify-app bizreflex_rubix set adv-attribute lastmodified value ""
+rubix modify-app bizreflex_rubix set adv-attribute mailErrCheckInterval value "3600"
+rubix modify-app bizreflex_rubix set adv-attribute maxAggregateInterval value "2678400"
+rubix modify-app bizreflex_rubix set adv-attribute maxDimSetAsFilter value "100"
+rubix modify-app bizreflex_rubix set adv-attribute maxFilterCombinationToBeCached value "10"
+rubix modify-app bizreflex_rubix set adv-attribute maxFilterSizeToBeCached value "2500"
+rubix modify-app bizreflex_rubix set adv-attribute maxLength value "10"
+rubix modify-app bizreflex_rubix set adv-attribute maxSegmentsToSyncInThread value "0"
+rubix modify-app bizreflex_rubix set adv-attribute maxSyncTask value "2"
+rubix modify-app bizreflex_rubix set adv-attribute maxTimeSeriesInterval value "2678400"
+rubix modify-app bizreflex_rubix set adv-attribute minSubsbrCountDays value "7"
+rubix modify-app bizreflex_rubix set adv-attribute pointRubixCacheDefaultEvictionPolicy value "com.guavus.rubix.cache.policy.PointRubixCacheVariableRetentionPolicy"
+rubix modify-app bizreflex_rubix set adv-attribute rangeCacheAllRanges value "false"
+rubix modify-app bizreflex_rubix set adv-attribute rangeCacheEvictionDiskThresholdCount value "5"
+rubix modify-app bizreflex_rubix set adv-attribute rangeCacheEvictionThresholdCount value "5"
+rubix modify-app bizreflex_rubix set adv-attribute rangeRubixCacheDefaultEvictionPolicy value "com.guavus.rubix.cache.policy.RangeRubixCacheVariableRetentionPolicy"
+rubix modify-app bizreflex_rubix set adv-attribute reuseInstaConnection value "false"
+rubix modify-app bizreflex_rubix set adv-attribute rgeUrl value "https:g/rge-br33.guavus.com:9443"
+rubix modify-app bizreflex_rubix set adv-attribute rootCAPath value "root.crt"
+rubix modify-app bizreflex_rubix set adv-attribute rrCacheConcurrencyLevel value "16"
+rubix modify-app bizreflex_rubix set adv-attribute rubixCacheDeserializingThread value "10"
+rubix modify-app bizreflex_rubix set adv-attribute rubixShellDiscardErrorMessage value "Guavus Network Systems Netreflex Platform"
+rubix modify-app bizreflex_rubix set adv-attribute ruleTimeGranularity value "3600"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerCheckInterval value "300"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerExponentialBackoffFactor value "2"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerInstaQueryfetchTaskNoOfRetries value "6"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerInstaQueryfetchTaskRetryIntervalInMillis value "600000"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerLatestSETime value "-1"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerMaxReqInterval value "86400"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerMinReqInterval value "3600"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerOldestSETime value "-1"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerPolicy value "com.guavus.rubix.scheduler.VariableGranularitySchedulerPolicy"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerQueryPrefetchRetryCnt value "2"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerQueryPrefetchRetryIntrvl value "600000"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerSingleEntitiesCount value "2"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerThreadPoolSize value "4"
+rubix modify-app bizreflex_rubix set adv-attribute schedulerTimeGranCeilFloor value "3600"
+rubix modify-app bizreflex_rubix set adv-attribute schedulervariableretentioncombinepoints value "288"
+rubix modify-app bizreflex_rubix set adv-attribute searchMinGapInterval value "3600"
+rubix modify-app bizreflex_rubix set adv-attribute searchPollInterval value "3600"
+rubix modify-app bizreflex_rubix set adv-attribute sessionCookieDomain value ".guavus.com"
+rubix modify-app bizreflex_rubix set adv-attribute singleEntityDiskEvictionThresholdCount value "5"
+rubix modify-app bizreflex_rubix set adv-attribute singleEntityEvictionThresholdCount value "5"
+rubix modify-app bizreflex_rubix set adv-attribute sslModeForDBConnection value "disable"
+rubix modify-app bizreflex_rubix set adv-attribute subQueryCacheSizeLocalMode value "10000"
+rubix modify-app bizreflex_rubix set adv-attribute subQueryLocalCacheConcurrencyLevel value "16"
+rubix modify-app bizreflex_rubix set adv-attribute syncManagerWaitShutdownTime value "600"
+rubix modify-app bizreflex_rubix set adv-attribute syncTaskScheduleInterval value "300"
+rubix modify-app bizreflex_rubix set adv-attribute syncUser value "root"
+rubix modify-app bizreflex_rubix set adv-attribute testEnableTrimByteBuffers value "true"
+rubix modify-app bizreflex_rubix set adv-attribute threadPoolSize value "16"
+rubix modify-app bizreflex_rubix set adv-attribute thriftKeepAlive value "true"
+rubix modify-app bizreflex_rubix set adv-attribute timeZone value "GMT"
+rubix modify-app bizreflex_rubix set adv-attribute timeseriesEvictionDiskThresholdCount value "446400"
+rubix modify-app bizreflex_rubix set adv-attribute timeseriesEvictionThresholdCount value "446400"
+rubix modify-app bizreflex_rubix set adv-attribute timeseriesLevelMap value "1h:1448;1d:217"
+rubix modify-app bizreflex_rubix set adv-attribute toppagesGrowthEnabled value "true"
+rubix modify-app bizreflex_rubix set adv-attribute toppagesTraffic95tileEnabled value "true"
+rubix modify-app bizreflex_rubix set adv-attribute treeRubixCacheDefaultEvictionPolicy value "com.guavus.rubix.cache.policy.TreeRubixCacheVariableRetentionPolicy"
+rubix modify-app bizreflex_rubix set adv-attribute uiExponentialBackoffFactor value "2"
+rubix modify-app bizreflex_rubix set adv-attribute uiInstaQueryfetchTaskNoOfRetries value "3"
+rubix modify-app bizreflex_rubix set adv-attribute uiInstaQueryfetchTaskRetryIntervalInMillis value "60000"
+rubix modify-app bizreflex_rubix set adv-attribute umJGroupsClusterName value "tcp-sync"
+rubix modify-app bizreflex_rubix set adv-attribute umJGroupsConfig value "ha-jdbc-jgroups.xml"
+rubix modify-app bizreflex_rubix set adv-attribute umJgroupsBindPort value "7900"
+rubix modify-app bizreflex_rubix set adv-attribute umJgroupsInitialHost value "192.168.168.109[7900],192.168.168.110[7900],192.168.168.111[7900],192.168.168.112[7900]"
+rubix modify-app bizreflex_rubix set adv-attribute umJgroupsNumInitialMembers value "1"
+rubix modify-app bizreflex_rubix set adv-attribute umJgroupsPortRange value "1"
+rubix modify-app bizreflex_rubix set adv-attribute useBaseGran value "false"
+rubix modify-app bizreflex_rubix set adv-attribute useBinSourceApi value "true"
+rubix modify-app bizreflex_rubix set adv-attribute useIdNameNoReserveAPI value "true"
+rubix modify-app bizreflex_rubix set adv-attribute useRangeCache value "false"
+rubix modify-app bizreflex_rubix set adv-attribute useSubQueryCacheLocalMode value "true"
+rubix modify-app bizreflex_rubix set adv-attribute userTimeZone value "false"
+rubix modify-app bizreflex_rubix set attribute applicationPath value "/opt/tms/bizreflex-bizreflex3.3"
+rubix modify-app bizreflex_rubix set attribute clusterName value "BRRUB"
+rubix modify-app bizreflex_rubix set attribute clusterSize value "6"
+rubix modify-app bizreflex_rubix set attribute cubeGenerator value "com.guavus.rubix.bizreflex.rules.DistributedCubeGenerator"
+rubix modify-app bizreflex_rubix set attribute dataDir value "data"
+rubix modify-app bizreflex_rubix set attribute datasourceAdapter value "com.guavus.rubix.dao.OptimizedInstaAdapter"
+rubix modify-app bizreflex_rubix set attribute distributedConnectionUserName value "rubix"
+rubix modify-app bizreflex_rubix set attribute hibernateConnectionUserName value "sa"
+rubix modify-app bizreflex_rubix set attribute instaCubeDefinitionPath value "/opt/tms/xml_schema/BizreflexCubeDefinition.xml"
+rubix modify-app bizreflex_rubix set attribute ipAddress value ""
+rubix modify-app bizreflex_rubix set attribute maxClusterMembers value "BR33-RUB1;BR33-RUB2;BR33-RUB3;BR33-RUB4"
+rubix modify-app bizreflex_rubix set attribute maxClusterSize value "6"
+rubix modify-app bizreflex_rubix set attribute minClusterSize value "4"
+rubix modify-app bizreflex_rubix set attribute numOwners value "3"
+rubix modify-app bizreflex_rubix set attribute numSegments value "64"
+rubix modify-app bizreflex_rubix set attribute psHost value "192.168.168.114"
+rubix modify-app bizreflex_rubix set attribute psPort value "11111"
+rubix modify-app bizreflex_rubix set attribute resolver value "com.guavus.rubix.bizreflex.BizReflexResolver"
+rubix modify-app bizreflex_rubix set attribute rubixNumInitialMembers value "6"
+rubix modify-app bizreflex_rubix set attribute rubixInitialHost value "192.168.168.109[7800],192.168.168.110[7800],192.168.168.111[7800],192.168.168.112[7800]"
+rubix modify-app bizreflex_rubix set attribute rubixPortRange value "1"
+rubix modify-app bizreflex_rubix set attribute scheduler value "true"
+rubix modify-app bizreflex_rubix set attribute superUser value "admin"
+rubix modify-app bizreflex_rubix enable
+rubix modify-app bizreflex_rubix modify-instance 0 enable
+rubix modify-app bizreflex_rubix set attribute hibernateConnectionPassword value ""
+rubix modify-app bizreflex_rubix modify-instance 0 set adv-attribute keyStorePassword value sso123
+rubix modify-app bizreflex_rubix set attribute distributedConnectionPassword value rubix@123
+pm process rubix launch auto
+pm process rubix launch relaunch auto
+# shell
+_exec sed -i 's/TCPPING timeout
+_exec mkdir -p /data/diskstore/BRRUB
+_exec touch /data/diskstore/BRRUB/disk_mounted
+_exec chmod +x /opt/tps/process/rubix_ssh_shared_connection.sh

@@ -1,0 +1,10 @@
+#######################
+# Cluster Configuration
+#######################
+cluster.CMDS-VZWLAB2-UI.name=vzwlab2uip0-vip
+cluster.CMDS-VZWLAB2-UI.interface=eth0
+cluster.CMDS-VZWLAB2-UI.expected-nodes=4
+cluster.CMDS-VZWLAB2-UI.master.address=10.168.212.133
+cluster.CMDS-VZWLAB2-UI.master.subnet=255.255.255.0
+cluster.CMDS-VZWLAB2-UI.master.interface=eth0
+

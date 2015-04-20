@@ -1,0 +1,120 @@
+####################
+# Hadoop Oozie
+####################
+
+hadoop.clients.0=192.168.0.67
+hadoop.clients.1=192.168.0.70
+hadoop.clients.2=192.168.0.83
+hadoop.clients.3=192.168.0.86
+
+hadoop.slaves.0=192.168.0.74
+hadoop.slaves.1=192.168.0.77
+hadoop.slaves.2=192.168.0.80
+hadoop.slaves.3=192.168.0.90
+hadoop.slaves.4=192.168.0.93
+hadoop.slaves.5=192.168.0.96
+
+# Master is a namenode cluster VIP
+hadoop.master.ip=192.168.0.71
+
+#### OOZIE Collection Centre Config ####
+
+# Provide oozie server to be the VIP address of the Name node cluster
+# Oozie Mandatory
+oozie.collector.component.count=2
+oozie.namenode.vip=192.168.0.71
+oozie.namenode.hostname=WMTPPAAA-CMDS-COL1-VIP
+
+# Job details (Atlas)
+oozie.job.Atlas.name=AtlasCubes
+oozie.job.Atlas.path=/opt/etc/oozie/AtlasCubes
+oozie.job.Atlas.attribute.jobFrequency=60
+oozie.job.Atlas.attribute.binInterval=3600
+
+# Job action attributes
+oozie.job.Atlas.action.SubscriberIBCreator.attribute.timeout=-1
+oozie.job.Atlas.action.WngIBCreator.attribute.timeout=-1
+oozie.job.Atlas.action.BaseCubes.attribute.timeout=-1
+oozie.job.Atlas.action.SubcrBytesAgg.attribute.timeout=0
+oozie.job.Atlas.action.TopN.attribute.timeout=0
+oozie.job.Atlas.action.SubcrDev.attribute.timeout=0
+oozie.job.Atlas.action.Rollup.attribute.timeout=0
+
+# Job details (Distcp)
+oozie.job.Distcp.name=DistcpJob
+oozie.job.Distcp.path=/opt/etc/oozie/Distcp
+oozie.job.Distcp.attribute.jobFrequency=1
+oozie.job.Distcp.attribute.frequencyUnit=hour
+
+# Job action attributes
+oozie.job.Distcp.action.DistcpAction.attribute.destNamenode=cospgvcnp0
+oozie.job.Distcp.action.DistcpAction.attribute.srcNamenode=WMTPPAAA-CMDS-COL1-VIP
+oozie.job.Distcp.action.DistcpAction.attribute.timeout=-1
+
+# Job details (TopUrl) # Commented - N/A for 3.0rc3 and above, retained for future use. #
+#oozie.job.TopUrl.name=TopUrl
+#oozie.job.TopUrl.path=/opt/etc/oozie/TopUrl
+#oozie.job.TopUrl.attribute.jobFrequency=60
+
+# Job action attributes
+#oozie.job.TopUrl.action.HHUrl.attribute.timeout=-1
+
+# Job details (SubscriberBytes)
+oozie.job.SubscriberBytes.name=SubscriberBytes
+oozie.job.SubscriberBytes.path=/opt/etc/oozie/SubscriberBytes
+oozie.job.SubscriberBytes.attribute.jobFrequency=1
+oozie.job.SubscriberBytes.attribute.frequencyUnit=month
+
+# Job action attributes
+oozie.job.SubscriberBytes.action.DistcpBytes.attribute.destNamenode=cospgvcnp0
+oozie.job.SubscriberBytes.action.DistcpBytes.attribute.srcNamenode=WMTPPAAA-CMDS-COL1-VIP
+oozie.job.SubscriberBytes.action.SubBytesMapRedAction.attribute.timeout=10
+oozie.job.SubscriberBytes.action.DistcpBytes.attribute.timeout=0
+
+# Job details (TopSubcr)
+oozie.job.TopSubcr.name=TopSubcr
+oozie.job.TopSubcr.path=/opt/etc/oozie/TopSubcr
+oozie.job.TopSubcr.attribute.jobFrequency=10080
+
+# Job action attributes
+oozie.job.TopSubcr.action.BytesAgg.attribute.timeout=-1
+oozie.job.TopSubcr.action.TopSubscribers.attribute.timeout=0
+oozie.job.TopSubcr.action.TopSubcrMerge.attribute.timeout=0
+
+# Job details (ConsistentTopSubcr)
+oozie.job.ConsistentTopSubcr.name=ConsistentTopSubcr
+oozie.job.ConsistentTopSubcr.path=/opt/etc/oozie/ConsistentTopSubcr
+oozie.job.ConsistentTopSubcr.attribute.jobFrequency=10080
+
+# Job action attributes
+oozie.job.ConsistentTopSubcr.action.ConsistentSubcrs.attribute.timeout=-1
+
+# Job details (CleanupCollector)
+oozie.job.CleanupCollector.name=CleanupDataset
+oozie.job.CleanupCollector.path=/opt/etc/oozie/CleanupDataset
+oozie.job.CleanupCollector.attribute.jobFrequency=1
+oozie.job.CleanupCollector.attribute.frequencyUnit=hour
+
+# Job details (CleanupLogs)
+oozie.job.CleanupLogs.name=CleanupLogs
+oozie.job.CleanupLogs.path=/opt/etc/oozie/CleanupLogs
+oozie.job.CleanupLogs.attribute.jobFrequency=1
+oozie.job.CleanupLogs.attribute.frequencyUnit=day
+
+# Job details (CleanupAtlas)
+oozie.job.CleanupAtlas.name=CleanupAtlas
+oozie.job.CleanupAtlas.path=/opt/etc/oozie/CleanupAtlas
+oozie.job.CleanupAtlas.attribute.jobFrequency=1
+oozie.job.CleanupAtlas.attribute.frequencyUnit=day
+
+# Job details ( CleanupMonthlyData)
+oozie.job.CleanupMonthlyData.name=CleanupDataset
+oozie.job.CleanupMonthlyData.path=/opt/etc/oozie/CleanupDataset
+oozie.job.CleanupMonthlyData.attribute.jobFrequency=1
+oozie.job.CleanupMonthlyData.attribute.frequencyUnit=day
+
+# Job action attributes
+oozie.job.CleanupAtlas.action.CleanupAction.attribute.cleanupOffset=1
+
+# Dataset attributes
+oozie.dataset.common.path.attribute.dcname=PlymouthMeeting

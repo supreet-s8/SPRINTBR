@@ -1,0 +1,35 @@
+# Product
+build=Atlas
+# Release
+version=3.0
+########
+# ICN IP
+########
+# Required where you include drbd config
+#drbd.self.ip=10.168.213.2
+
+#####################################################
+# Include Defaults
+#####################################################
+# Following files must exist in the specified Profile
+#include=sm
+include=ntp
+include=user
+include=hostmap
+include=snmp
+#include=drbd
+#include=mapReduce
+
+# Configure Hostname
+ip.hostname=vzwlabgvmnp2
+
+##########################
+# Interface Configuration
+##########################
+#interface.icnb.ip=192.168.0.67
+#interface.icnb.subnet=255.255.255.0
+#interface.icnb.bond=eth6,eth7
+#interface.icnb.comment=Inter Chassis Network
+
+
+#####################################################################

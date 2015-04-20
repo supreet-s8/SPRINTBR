@@ -1,0 +1,23 @@
+#######################
+# Cluster Configuration
+#######################
+insta.cube_xml_path=/opt/tms/xml_schema/BizreflexCubeDefinition.xml
+insta.dbname=br_33
+insta.cluster.name=BRINSTAHA
+insta.cluster.vip=192.168.168.114
+insta.ip.module1=192.168.168.107
+insta.ip.module2=192.168.168.108
+insta.cluster.port=
+insta.wwid.1=3600c0ff0001a79f0b326615301000000
+insta.wwid.2=3600c0ff0001a79f08826615301000000
+insta.wwid.3=3600c0ff0001a79f0a426615301000000
+insta.wwid.4=3600c0ff0001a79f0c626615301000000
+insta.backupdbroot.1.wwid=1200c0ff0001a79f0b326615301000000
+insta.backupdbroot.1.uuid=1234
+insta.backupdbroot.1.mount_point=/data/v
+insta.backupdbroot.2.wwid=3434c0ff0001a79f0b326615301000000
+insta.backupdbroot.2.uuid=6789
+insta.backupdbroot.2.mount_point=/data/s
+insta.backupdbroot.3.wwid=3600c0ff0001a79f0b326615301000000
+insta.backupdbroot.3.uuid=234
+insta.backupdbroot.3.mount_point=/data/m

@@ -1,0 +1,10 @@
+##########
+# IPs for UI Nodes in cluster.
+##########
+ip.filter.input.accept.0=10.136.239.51
+ip.filter.input.accept.1=10.136.239.52
+ip.filter.input.accept.2=10.136.239.53
+ip.filter.input.accept.3=10.136.239.54
+ip.filter.input.accept.4=10.136.239.58
+
+

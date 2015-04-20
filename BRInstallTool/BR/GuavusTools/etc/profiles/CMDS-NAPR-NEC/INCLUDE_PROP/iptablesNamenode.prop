@@ -1,0 +1,7 @@
+##########
+# IPs for collectors/Namennodes in Cluster.
+##########
+ip.filter.input.accept.0=10.168.212.106
+ip.filter.input.accept.1=10.168.212.114
+
+

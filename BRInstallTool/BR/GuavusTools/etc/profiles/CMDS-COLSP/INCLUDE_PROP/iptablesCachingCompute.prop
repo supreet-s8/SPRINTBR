@@ -1,0 +1,7 @@
+##########
+# IPs for Insta Nodes in Cluster.
+##########
+ip.filter.input.accept.0=10.136.239.49
+ip.filter.input.accept.1=10.136.239.50
+ip.filter.input.accept.2=10.136.239.59
+

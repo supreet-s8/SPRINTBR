@@ -1,0 +1,8 @@
+###################################
+# DRBD # Hostnames and IP addresses
+###################################
+drbd.hostone.hostname=vzwlab2cnp1
+drbd.hostone.ip=10.168.212.106
+drbd.hosttwo.hostname=vzwlab2cnp2
+drbd.hosttwo.ip=10.168.212.114
+

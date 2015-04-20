@@ -1,0 +1,11 @@
+#######################
+# Cluster Configuration
+#######################
+cluster.col1.name=BRRUB
+cluster.col1.interface=eth0
+cluster.col1.expected-nodes=6
+cluster.col1.master.address=192.168.168.115
+cluster.col1.master.subnet=/23
+cluster.col1.master.interface=eth0
+cluster.col1.nodenames=BR33-RUB1,BR33-RUB2,BR33-RUB3,BR33-RUB4
+

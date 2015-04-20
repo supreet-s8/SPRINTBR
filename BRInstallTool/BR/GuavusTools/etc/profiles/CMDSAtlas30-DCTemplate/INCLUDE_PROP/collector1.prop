@@ -1,0 +1,16 @@
+# Collector nodes configuration on Collection Centre.
+# Format: collector.adaptor.<name>.<attribute>=<value>
+# Count stands to be number of collectors being used for one compute cluster. Produces o/p dir.
+
+#########################
+# Collector Configuration
+#########################
+#collector.instance.adaptor.param=value
+collector.DCName=PlymouthMeeting
+collector.instance.1.ipfix.port=4000
+collector.instance.1.ipfix.timeout=600
+collector.instance.1.pilotPacket.port=5169
+collector.instance.1.pilotPacket.timeout=600
+collector.instance.1.tcpfix.port=4000
+collector.instance.1.tcpfix.timeout=600
+

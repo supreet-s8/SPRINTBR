@@ -1,0 +1,192 @@
+# ip
+no ip map-hostname
+ip filter chain INPUT rule append tail target ACCEPT dup-delete in-intf lo
+ip host vzwlab2ccp1 10.168.212.100
+ip host vzwlab2uip0 10.168.212.133
+ip host vzwlab2uip1 10.168.212.104
+ip host vzwlab2ccp0 10.168.212.167
+ip host vzwlab2uip4 10.168.212.113
+ip host vzwlab2uip2 10.168.212.105
+ip host vzwlab2cnp2 10.168.212.114
+ip host vzwlab2map4 10.168.212.109
+ip host vzwlab2ccp2 10.168.212.108
+ip host vzwlab2map1 10.168.212.101
+ip host vzwlab2cnp0 10.168.212.164
+ip host vzwlab2map2 10.168.212.102
+ip host vzwlab2cnp1 10.168.212.106
+ip host vzwlab2map6 10.168.212.111
+ip host vzwlab2map3 10.168.212.103
+ip host vzwlab2mnp1 10.168.212.107
+ip host vzwlab2mnp2 10.168.212.115
+ip host vzwlab2uip3 10.168.212.112
+ip host vzwlab2map5 10.168.212.110
+hostname vzwlab2mnp1
+no web enable
+no web http enable
+banner login "WARNING NOTICE This system is for the use of authorized users only. Individuals using this system without authority, or in excess of their authority, are subject to having all of their activities on this system monitored and recorded by system personnel. In the course of monitoring individuals improperly using this system, or in the course of system maintenance, the activities of authorized users may also be monitored. Anyone using this system expressly consents to such monitoring and is advised that if such monitoring reveals possible evidence of criminal activity, system personnel may provide the evidence of such monitoring to law enforcement officials."
+ip filter chain INPUT policy ACCEPT
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 13 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 13 icmp-code 0
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 14 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 14 icmp-code 0
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 17 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 17 icmp-code 0
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 18 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 18 icmp-code 0
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50030
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50070
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50090
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50075
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 13
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 14
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 17
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 18
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 13
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 14
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 17
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 18
+ip filter chain INPUT rule append tail target DROP protocol udp dest-port 5353
+ip filter enable
+# user
+no username sytchgrp disable
+username sytchgrp password 7 $1$0C1YgPJe$b668sGJoGRq2GanmSyqUK1
+username sytchgrp capability monitor
+no username noc1grp disable
+username noc1grp password 7 $1$C4V0wlVm$pTEwgTWQPa44xYinkrWOU/
+username noc1grp capability monitor
+no username ronlygrp disable
+username ronlygrp password 7 $1$yeK46SXZ$w51TzBAmtr4qRq/DHn2to/
+username ronlygrp capability monitor
+no username sanetest disable
+username sanetest password 7 $1$uyj.ivl1$/LSMAq/lZCLmCBHAhCjIm/
+username sanetest capability monitor
+username monitor disable
+no username swtchgrp disable
+username swtchgrp password 7 $1$8bA6UnHS$e6Bn1nikY1PrNP01n40We0
+username swtchgrp capability monitor
+username cmcclient disable
+username cmcrendev disable
+no username mainteng disable
+username mainteng password 7 $1$uxo92ccJ$H13h7.WW5fLnEP9BHuSWk0
+username mainteng capability monitor
+no username dagosmi disable
+username dagosmi password 7 $1$gKK2LtLF$KkphRzld8ID4P6mYSTmRm/
+username dagosmi capability admin
+no username root disable
+username root password 0 Gu@vu$!!
+no username vendgrp disable
+username vendgrp password 7 $1$pZFCqIsu$MtteOcCdpNjDTHrXno4MK.
+username vendgrp capability monitor
+no username srenggrp disable
+username srenggrp password 7 $1$b5grmy/x$qGGOJ.N2h0Sr0n2Zze8mQ1
+username srenggrp capability monitor
+no username romlogin disable
+username romlogin password 7 $1$A9AUxqdJ$rsi04DIjU3UYwaqF8Vhi20
+username romlogin capability monitor
+no username wdscgrp disable
+username wdscgrp password 7 $1$wVNrF4oR$Ib71zJKCFalnP6C8lBjQf0
+username wdscgrp capability monitor
+no username sstchgrp disable
+username sstchgrp password 7 $1$m.X1EfG8$ko3CzfBFf9gSXOVySWs/d1
+username sstchgrp capability monitor
+no username admin disable
+username admin password 0 Gu@vu$!!
+username admin capability admin
+no username sytchgr disable
+username sytchgr password 7 $1$BJgVue6k$26wrsw80aBLOR1hhx.L.N0
+username sytchgr capability monitor
+no username VzWAdmin disable
+username VzWAdmin password 0 Gu@vu$!!
+username VzWAdmin capability admin
+no username cdrUser disable
+username cdrUser password 7 $1$2tukuLE2$WZ3mtueXbBPZykUnGJCq81
+username cdrUser capability monitor
+no username sfenggrp disable
+username sfenggrp password 7 $1$y7Cvujhx$WxUZrpITynR5ghX25KddN1
+username sfenggrp capability monitor
+no username noc3grp disable
+username noc3grp password 7 $1$LwLCED6D$h/B6YdVqsRadv6T7f0X.N/
+username noc3grp capability monitor
+no username samuser disable
+username samuser password 7 $1$Vw4hYenp$BCttwrrUvifL8g.OKfP.i1
+username samuser capability admin
+no username rfenggrp disable
+username rfenggrp password 7 $1$lcJiVSMl$nYDzjRme.H9nTPpgCXzPs1
+username rfenggrp capability monitor
+no username perfgrp disable
+username perfgrp password 7 $1$uTJ0xsb9$NJaBeN6gK6hcNamnJcPPt1
+username perfgrp capability monitor
+no username dsrvcgrp disable
+username dsrvcgrp password 7 $1$F.xDqaYd$v0vAPdKNyDmP88QY7Tqn61
+username dsrvcgrp capability monitor
+no username noc2grp disable
+username noc2grp password 7 $1$0RSDHme7$Wh09mu6mQZPnA9UUXwDiK.
+username noc2grp capability monitor
+# ntp
+no ntp disable
+clock timezone UTC
+ssh client global host-key-check no
+ntp server 135.1.64.124
+no ntp server 135.1.64.124 disable
+ntpdate 135.1.64.124
+aaa authentication attempts lockout max-fail 3
+aaa authentication attempts lockout unlock-time -1
+no virt enable
+no pm process insta launch enable
+no pm process insta launch relaunch auto
+no pm process insta launch auto
+no snmp-server traps event insta-adaptor-down
+pm process insta terminate
+# snmp
+no snmp-server community public
+snmp-server community atlas ro
+snmp-server enable
+snmp-server enable communities
+snmp-server enable traps
+snmp-server listen enable
+snmp-server location Naperville
+snmp-server traps community atlas
+snmp-server traps event HDFS-namenode-status
+snmp-server traps event no-collector-data
+snmp-server traps event collector-data-resume
+snmp-server traps event collector-dropped-flow-alarm-cleared
+snmp-server traps event collector-dropped-flow-thres-crossed
+snmp-server traps event cpu-util-high
+snmp-server traps event cpu-util-ok
+snmp-server traps event disk-io-high
+snmp-server traps event disk-space-low
+snmp-server traps event disk-space-ok
+snmp-server traps event interface-down
+snmp-server traps event interface-up
+snmp-server traps event memusage-high
+snmp-server traps event memusage-ok
+snmp-server traps event netusage-high
+snmp-server traps event netusage-ok
+snmp-server traps event paging-high
+snmp-server traps event paging-ok
+snmp-server traps event process-crash
+snmp-server traps event process-relaunched
+snmp-server traps event test-trap
+snmp-server traps event unexpected-shutdown
+stats alarm disk_io enable
+stats alarm intf_util enable
+stats alarm fs_mnt falling clear-threshold 10
+stats alarm fs_mnt falling error-threshold 7
+stats alarm memory_pct_used enable
+stats alarm cpu_util_indiv rate-limit count long 250
+stats alarm cpu_util_indiv rate-limit count medium 150
+stats alarm fs_mnt rising error-threshold 7
+stats alarm disk_io rising error-threshold 81920
+stats alarm disk_io rising clear-threshold 51200
+stats alarm intf_util rising error-threshold 1572864000
+stats alarm intf_util rising clear-threshold 1258291200
+stats alarm paging rising error-threshold 16000
+internal set modify - /stats/config/alarm/cpu_util_indiv/trigger/node_pattern value name /system/cpu/all/busy_pct
+internal set modify - /stats/config/sample/disk_io/interval value duration_sec 3600
+internal set create - "/stats/config/alarm/fs_mnt/trigger/node_patterns/\\/system\/fs\\/mount\/\\\\\\/data\\/bytes-percent-free" value name "/system/fs/mount/\/data/bytes-percent-free"
+stats alarm cpu_util_indiv rising clear-threshold 85
+stats alarm cpu_util_indiv rising error-threshold 90
+internal set modify - /stats/config/sample/disk_io/interval value duration_sec 3600
+no snmp-server host 135.1.124.11 disable
+snmp-server host 135.1.124.11 traps version 2c atlas
+pm process statsd restart

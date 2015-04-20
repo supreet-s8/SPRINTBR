@@ -1,0 +1,42 @@
+# Product
+build=BR
+# Release
+version=33
+
+########
+# ICN IP
+########
+# Required where you include drbd config
+samplicator.self.ip=192.168.168.107
+
+#####################################################
+# Include Defaults
+#####################################################
+# Following files must exist in the specified Profile
+include=sm
+include=shell_rubix
+include=ntp
+include=user
+include=snmp
+include=drbd
+include=cluster_rubix
+include=collector1
+include=hadoop
+include=rubix
+include=insta
+include=mapReduce
+include=samplicate
+include=rge
+#
+## Configure Hostname
+
+##########################
+# Interface Configuration
+##########################
+#interface.icnb.ip=192.168.0.67
+#interface.icnb.subnet=255.255.255.0
+#interface.icnb.bond=eth6,eth7
+#interface.icnb.comment=Inter Chassis Network
+
+
+#####################################################################

@@ -1,0 +1,40 @@
+# Routing configuration
+#ip.default-gateway=10.168.206.1
+#ip.name-server=
+
+# Host mappings
+ip.host.vzwlabgvuip1=10.168.213.111
+ip.host.vzwlabgvuip2=10.168.213.114
+ip.host.vzwlabgvcnp1=10.168.213.102
+ip.host.vzwlabgvcnp2=10.168.213.123
+ip.host.vzwlabgvmap2=10.168.213.126
+ip.host.vzwlabgvccp2=10.168.213.129
+ip.host.vzwlabgvuip3=10.168.213.132
+ip.host.vzwlabgvuip4=10.168.213.135
+ip.host.vzwlabgvmap1=10.168.213.105
+ip.host.vzwlabgvmap3=10.168.213.120
+ip.host.vzwlabgvmap4=10.168.213.141
+ip.host.vzwlabgvccp1=10.168.213.108
+
+ip.host.vzwlabgvcnp0=10.168.213.144
+ip.host.vzwlabgvuip0=10.168.213.145
+ip.host.vzwlabgvccp0=10.168.213.146
+
+#ip.host.VZWLAB-CMDS-A-AL-GVS09-01=192.168.0.67
+#ip.host.VZWLAB-CMDS-A-AL-GVS10-01=192.168.0.70
+#ip.host.VZWLAB-CMDS-A-AL-GVS11-01=192.168.0.74
+#ip.host.VZWLAB-CMDS-A-AL-GVS12-01=192.168.0.77
+#ip.host.VZWLAB-CMDS-A-AL-GVS13-01=192.168.0.80
+#ip.host.VZWLAB-CMDS-A-AL-GVS09-02=192.168.0.83
+#ip.host.VZWLAB-CMDS-A-AL-GVS10-02=192.168.0.86
+#ip.host.VZWLAB-CMDS-A-AL-GVS11-02=192.168.0.90
+#ip.host.VZWLAB-CMDS-A-AL-GVS12-02=192.168.0.93
+#ip.host.VZWLAB-CMDS-A-AL-GVS13-02=192.168.0.96
+#ip.host.GVS-VZWLAB-DC-ATLAS20=192.168.0.71
+#ip.host.GVS-VZWLAB-AC-ATLAS20=
+
+# Host Mappings External
+
+
+# Turn on/off static host mapping
+ip.map-hostname=no

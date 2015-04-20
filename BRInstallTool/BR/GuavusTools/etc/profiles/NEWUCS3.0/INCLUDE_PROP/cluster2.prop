@@ -1,0 +1,9 @@
+#######################
+# Cluster Configuration
+#######################
+cluster.202.name=GVS-NEC-1.5-UI
+cluster.202.interface=eth0
+cluster.202.expected-nodes=4
+cluster.202.master.address=10.168.213.145
+cluster.202.master.subnet=255.255.255.0
+cluster.202.master.interface=eth0

@@ -1,0 +1,78 @@
+# collector
+collector add-instance 10
+collector modify-instance 10 add-adaptor netflow
+collector modify-instance 10 modify-adaptor netflow add-port 51003
+collector modify-instance 10 modify-adaptor netflow modify-port 51003 adapter-profile none
+collector modify-instance 10 modify-adaptor netflow modify-port 51003 filter-sourceIP disable
+collector modify-instance 10 modify-adaptor netflow modify-port 51003 router-name R3
+collector modify-instance 10 modify-adaptor netflow modify-port 51003 socket-IP 0.0.0.0
+collector modify-instance 10 modify-adaptor netflow add-port 51001
+collector modify-instance 10 modify-adaptor netflow modify-port 51001 adapter-profile none
+collector modify-instance 10 modify-adaptor netflow modify-port 51001 filter-sourceIP disable
+collector modify-instance 10 modify-adaptor netflow modify-port 51001 router-name R1
+collector modify-instance 10 modify-adaptor netflow modify-port 51001 socket-IP 0.0.0.0
+collector modify-instance 10 modify-adaptor netflow add-port 51007
+collector modify-instance 10 modify-adaptor netflow modify-port 51007 adapter-profile none
+collector modify-instance 10 modify-adaptor netflow modify-port 51007 filter-sourceIP disable
+collector modify-instance 10 modify-adaptor netflow modify-port 51007 router-name R7
+collector modify-instance 10 modify-adaptor netflow modify-port 51007 socket-IP 0.0.0.0
+collector modify-instance 10 modify-adaptor netflow add-port 51058
+collector modify-instance 10 modify-adaptor netflow modify-port 51058 adapter-profile none
+collector modify-instance 10 modify-adaptor netflow modify-port 51058 filter-sourceIP disable
+collector modify-instance 10 modify-adaptor netflow modify-port 51058 router-name R6
+collector modify-instance 10 modify-adaptor netflow modify-port 51058 socket-IP 0.0.0.0
+collector modify-instance 10 modify-adaptor netflow add-port 51027
+collector modify-instance 10 modify-adaptor netflow modify-port 51027 adapter-profile none
+collector modify-instance 10 modify-adaptor netflow modify-port 51027 filter-sourceIP disable
+collector modify-instance 10 modify-adaptor netflow modify-port 51027 router-name R27
+collector modify-instance 10 modify-adaptor netflow modify-port 51027 socket-IP 0.0.0.0
+collector modify-instance 10 modify-adaptor netflow add-port 51004
+collector modify-instance 10 modify-adaptor netflow modify-port 51004 adapter-profile none
+collector modify-instance 10 modify-adaptor netflow modify-port 51004 filter-sourceIP disable
+collector modify-instance 10 modify-adaptor netflow modify-port 51004 router-name R4
+collector modify-instance 10 modify-adaptor netflow modify-port 51004 socket-IP 0.0.0.0
+collector modify-instance 10 modify-adaptor netflow add-port 51005
+collector modify-instance 10 modify-adaptor netflow modify-port 51005 adapter-profile none
+collector modify-instance 10 modify-adaptor netflow modify-port 51005 filter-sourceIP disable
+collector modify-instance 10 modify-adaptor netflow modify-port 51005 router-name R5
+collector modify-instance 10 modify-adaptor netflow modify-port 51005 socket-IP 0.0.0.0
+collector modify-instance 10 modify-adaptor netflow add-port 51006
+collector modify-instance 10 modify-adaptor netflow modify-port 51006 adapter-profile none
+collector modify-instance 10 modify-adaptor netflow modify-port 51006 filter-sourceIP disable
+collector modify-instance 10 modify-adaptor netflow modify-port 51006 router-name R58
+collector modify-instance 10 modify-adaptor netflow modify-port 51006 socket-IP 0.0.0.0
+collector modify-instance 10 modify-adaptor netflow add-port 51008
+collector modify-instance 10 modify-adaptor netflow modify-port 51008 adapter-profile none
+collector modify-instance 10 modify-adaptor netflow modify-port 51008 filter-sourceIP disable
+collector modify-instance 10 modify-adaptor netflow modify-port 51008 router-name R8
+collector modify-instance 10 modify-adaptor netflow modify-port 51008 socket-IP 0.0.0.0
+collector modify-instance 10 modify-adaptor netflow add-port 51002
+collector modify-instance 10 modify-adaptor netflow modify-port 51002 adapter-profile none
+collector modify-instance 10 modify-adaptor netflow modify-port 51002 filter-sourceIP disable
+collector modify-instance 10 modify-adaptor netflow modify-port 51002 router-name R2
+collector modify-instance 10 modify-adaptor netflow modify-port 51002 socket-IP 0.0.0.0
+collector modify-instance 10 modify-adaptor netflow backup-file-system hostname 127.0.0.1
+collector modify-instance 10 modify-adaptor netflow backup-file-system port 9000
+collector modify-instance 10 modify-adaptor netflow backup-file-system user admin
+collector modify-instance 10 modify-adaptor netflow bin-size 300
+collector modify-instance 10 modify-adaptor netflow drop-alarm-clear-interval 1
+collector modify-instance 10 modify-adaptor netflow drop-alarm-raise-interval 1
+collector modify-instance 10 modify-adaptor netflow drop-alarm-threshold 10
+collector modify-instance 10 modify-adaptor netflow file-format binCompactCompression
+collector modify-instance 10 modify-adaptor netflow file-system hdfs-seq-file
+collector modify-instance 10 modify-adaptor netflow prorate enable
+collector modify-instance 10 modify-adaptor netflow num-bins 4
+collector modify-instance 10 modify-adaptor netflow output-directory /data/collector/netflow/%y/%m/%d/%h/%mi/br.
+collector modify-instance 10 modify-adaptor netflow stack-log-level 0
+collector modify-instance 10 modify-adaptor netflow timeout 10
+collector modify-instance 10 modify-adaptor netflow auto-bin-slide disable
+pm liveness grace-period 600
+pm process collector launch auto
+pm process collector launch environment set CLASSPATH /opt/tms/java/classes:/opt/hadoop/conf:/opt/hadoop/hadoop-core-0.20.203.0.jar:/opt/hadoop/lib/commons-configuration-1.6.jar:/opt/hadoop/lib/commons-logging-1.1.1.jar:/opt/hadoop/lib/commons-lang-2.4.jar:/opt/tms/java/MemSerializer.jar
+pm process collector launch environment set LD_LIBRARY_PATH /opt/hadoop/c++/Linux-amd64-64/lib:/usr/java/jre1.6.0_25/lib/amd64/server:/opt/tps/lib
+pm process collector launch environment set LD_PRELOAD /usr/lib64/libjemalloc.so
+pm process collector launch environment set LIBHDFS_OPTS "-Xmx8192m" 
+pm process collector launch relaunch auto
+pm process collector launch params 1 -i
+pm process collector launch params 2 10
+pm process collector launch enable 

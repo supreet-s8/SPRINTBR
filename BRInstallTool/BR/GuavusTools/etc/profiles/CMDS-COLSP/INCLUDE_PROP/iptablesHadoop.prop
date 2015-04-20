@@ -1,0 +1,14 @@
+##########
+# ICN IPs for every namenode, collector node and compute node.
+# Include this file in Collector/Namenodes and Compute nodes only.
+##########
+ip.filter.port.accept.0=10.136.239.41
+ip.filter.port.accept.1=10.136.239.42
+ip.filter.port.accept.2=10.136.239.43
+ip.filter.port.accept.3=10.136.239.44
+ip.filter.port.accept.4=10.136.239.45
+ip.filter.port.accept.5=10.136.239.46
+ip.filter.port.accept.6=10.136.239.47
+ip.filter.port.accept.7=10.136.239.48
+ip.filter.port.accept.8=10.136.239.57
+

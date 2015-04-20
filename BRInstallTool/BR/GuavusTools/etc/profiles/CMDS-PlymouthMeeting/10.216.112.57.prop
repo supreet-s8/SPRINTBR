@@ -1,0 +1,37 @@
+# Product
+build=Atlas
+# Release
+version=3.0
+
+########
+# ICN IP
+########
+# Required where you include drbd config
+
+#####################################################
+# Include Defaults
+#####################################################
+# Following files must exist in the specified Profile
+include=sm
+include=ntp
+include=user
+include=snmp
+include=hostmap
+include=cluster2
+include=collector2
+include=iptablesCollector2
+include=iptablesHadoop
+
+# Configure Hostname
+ip.hostname=WMTPPAAA-CMDS-A-AL-GVS09-02
+
+##########################
+# Interface Configuration
+##########################
+interface.icnb.ip=192.168.0.83
+interface.icnb.subnet=255.255.255.0
+interface.icnb.bond=eth6,eth7
+interface.icnb.comment=Inter Chassis Network
+
+
+#####################################################################

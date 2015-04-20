@@ -1,0 +1,10 @@
+#
+# Shell configuration
+#
+
+shell.commands.1=sed -i 's/TCPPING timeout="3000"/TCPPING timeout="12000"/' /opt/tms/bizreflex-bizreflex3.3/WEB-INF/classes/rubix-jgroups.xml
+echo "MaxStartups 20" >> /var/opt/tms/output/sshd_config
+shell.commands.2=mkdir -p /data/diskstore/BRRUB
+shell.commands.3=touch /data/diskstore/BRRUB/disk_mounted
+shell.commands.4=chmod +x /opt/tps/process/rubix_ssh_shared_connection.sh
+

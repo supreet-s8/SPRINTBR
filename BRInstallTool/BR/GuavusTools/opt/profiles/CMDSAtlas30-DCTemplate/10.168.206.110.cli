@@ -1,0 +1,831 @@
+# interface
+bond icnb
+interface eth6 bond icnb
+no interface eth6 shutdown
+no interface eth6 dhcp
+interface eth7 bond icnb
+no interface eth7 shutdown
+no interface eth7 dhcp
+interface icnb ip address 192.168.0.67 255.255.255.0
+no interface icnb shutdown
+no interface icnb dhcp
+interface icnb comment "Inter Chassis Network"
+# ip
+no ip map-hostname
+ip name-server 10.168.135.70
+ip filter chain INPUT rule append tail target ACCEPT dup-delete in-intf lo
+ip filter chain INPUT rule append tail target ACCEPT protocol udp dest-port 5353 source-addr 192.168.0.70 /32
+ip filter chain INPUT rule append tail target ACCEPT dup-delete source-addr 192.168.0.70 /32 dest-port 8080 protocol tcp
+ip filter chain INPUT rule append tail target ACCEPT protocol udp dest-port 5353 source-addr 192.168.0.67 /32
+ip filter chain INPUT rule append tail target ACCEPT dup-delete source-addr 192.168.0.67 /32 dest-port 8080 protocol tcp
+ip filter chain INPUT rule append tail target ACCEPT protocol udp dest-port 5353 source-addr 192.168.0.71 /32
+ip filter chain INPUT rule append tail target ACCEPT dup-delete source-addr 192.168.0.71 /32 dest-port 8080 protocol tcp
+ip filter chain INPUT rule append tail target DROP dup-delete dest-port 8080 protocol tcp
+ip host vzwlabgvccp2 10.168.213.129
+ip host VZWLAB-CMDS-A-AL-GVS09-02 192.168.0.83
+ip host vzwlabgvccp1 10.168.213.108
+ip host vzwlabgvuip1 10.168.213.111
+ip host vzwlabgvccp0 10.168.213.146
+ip host VZWLAB-CMDS-A-AL-GVS12-01 192.168.0.77
+ip host vzwlabgvmap2 10.168.213.126
+ip host vzwlabgvmap1 10.168.213.105
+ip host VZWLAB-CMDS-A-AL-GVS12-02 192.168.0.93
+ip host vzwlabgvcnp1 10.168.213.102
+ip host vzwlabgvuip3 10.168.213.132
+ip host vzwlabgvuip4 10.168.213.135
+ip host VZWLAB-CMDS-A-AL-GVS13-02 192.168.0.96
+ip host GVS-VZWLAB-DC-COL1 192.168.0.71
+ip host VZWLAB-CMDS-A-AL-GVS11-02 192.168.0.90
+ip host vzwlabgvmap3 10.168.213.120
+ip host vzwlabgvuip2 10.168.213.114
+ip host VZWLAB-CMDS-A-AL-GVS09-01 192.168.0.67
+ip host VZWLAB-CMDS-A-AL-GVS10-01 192.168.0.70
+ip host GVS-VZWLAB-DC-COL2 192.168.0.87
+ip host vzwlabgvcnp2 10.168.213.123
+ip host VZWLAB-CMDS-A-AL-GVS13-01 192.168.0.80
+ip host vzwlabgvcnp0 10.168.213.144
+ip host VZWLAB-CMDS-A-AL-GVS11-01 192.168.0.74
+ip host VZWLAB-CMDS-A-AL-GVS10-02 192.168.0.86
+ip host vzwlabgvmap4 10.168.213.141
+ip host vzwlabgvuip0 10.168.213.145
+hostname VZWLAB-CMDS-A-AL-GVS09-01
+no web enable
+no web http enable
+banner login "WARNING NOTICE This system is for the use of authorized users only. Individuals using this system without authority, or in excess of their authority, are subject to having all of their activities on this system monitored and recorded by system personnel. In the course of monitoring individuals improperly using this system, or in the course of system maintenance, the activities of authorized users may also be monitored. Anyone using this system expressly consents to such monitoring and is advised that if such monitoring reveals possible evidence of criminal activity, system personnel may provide the evidence of such monitoring to law enforcement officials."
+ip filter chain INPUT policy ACCEPT
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 13 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 13 icmp-code 0
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 14 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 14 icmp-code 0
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 17 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 17 icmp-code 0
+ip filter chain INPUT rule append tail target ACCEPT protocol icmp icmp-type 18 icmp-code 0
+ip filter chain OUTPUT rule append tail target ACCEPT protocol icmp icmp-type 18 icmp-code 0
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50030
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50070
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50090
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50075
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 13
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 14
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 17
+ip filter chain OUTPUT rule append tail target DROP protocol icmp icmp-type 18
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 13
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 14
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 17
+ip filter chain INPUT rule append tail target DROP protocol icmp icmp-type 18
+ip filter chain INPUT rule append tail target DROP protocol udp dest-port 5353
+ip filter enable
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.86 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.86 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.86 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.77 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.77 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.77 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.90 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.90 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.90 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.96 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.96 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.96 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.74 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.74 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.74 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.93 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.93 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.93 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.70 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.70 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.70 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.80 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.80 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.80 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.67 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.67 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.67 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50060 source-addr 192.168.0.83 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50071 source-addr 192.168.0.83 /32
+ip filter chain INPUT rule append tail target ACCEPT protocol tcp dest-port 50076 source-addr 192.168.0.83 /32
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50060
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50071
+ip filter chain INPUT rule append tail target DROP protocol tcp dest-port 50076
+# user
+no username sytchgrp disable
+username sytchgrp password 0 Gu@vu$!!
+username sytchgrp capability monitor
+no username noc1grp disable
+username noc1grp password 0 Gu@vu$!!
+username noc1grp capability monitor
+no username sanetest disable
+username sanetest password 0 Gu@vu$!!
+username sanetest capability monitor
+username monitor disable
+no username swtchgrp disable
+username swtchgrp password 0 Gu@vu$!!
+username swtchgrp capability monitor
+username cmcclient disable
+username cmcrendev disable
+no username dagosmi disable
+username dagosmi password Gu@vu$!!
+username dagosmi capability admin
+no username root disable
+username root password 0 Gu@vu$!!
+no username srenggrp disable
+username srenggrp password 0 Gu@vu$!!
+username srenggrp capability monitor
+no username wdscgrp disable
+username wdscgrp password 0 Gu@vu$!!
+username wdscgrp capability monitor
+no username sstchgrp disable
+username sstchgrp password 0 Gu@vu$!!
+username sstchgrp capability monitor
+no username admin disable
+username admin password 0 Gu@vu$!!
+username admin capability admin
+no username VzWAdmin disable
+username VzWAdmin password 0 Gu@vu$!!
+username VzWAdmin capability admin
+no username noc3grp disable
+username noc3grp password 0 Gu@vu$!!
+username noc3grp capability monitor
+no username samuser disable
+username samuser password 0 Gu@vu$!!
+username samuser capability admin
+no username perfgrp disable
+username perfgrp password 0 Gu@vu$!!
+username perfgrp capability monitor
+no username rfenggrp disable
+username rfenggrp password 0 Gu@vu$!!
+username rfenggrp capability monitor
+no username dsrvcgrp disable
+username dsrvcgrp password 0 Gu@vu$!!
+username dsrvcgrp capability monitor
+no username noc2grp disable
+username noc2grp password 0 Gu@vu$!!
+username noc2grp capability monitor
+# ntp
+no ntp disable
+clock timezone UTC
+ssh client global host-key-check no
+ntp server 135.1.64.124
+no ntp server 135.1.64.124 disable
+ntpdate 135.1.64.124
+aaa authentication attempts lockout max-fail 3
+aaa authentication attempts lockout unlock-time -1
+no virt enable
+no pm process insta launch enable
+no pm process insta launch relaunch auto
+no pm process insta launch auto
+no snmp-server traps event insta-adaptor-down
+pm process insta terminate
+# snmp
+no snmp-server community public
+snmp-server community atlas ro
+snmp-server enable
+snmp-server enable communities
+snmp-server enable traps
+snmp-server listen enable
+snmp-server location PlymouthMeeting
+snmp-server traps community atlas
+snmp-server traps event HDFS-namenode-status
+snmp-server traps event no-collector-data
+snmp-server traps event collector-data-resume
+snmp-server traps event collector-dropped-flow-alarm-cleared
+snmp-server traps event collector-dropped-flow-thres-crossed
+snmp-server traps event cpu-util-high
+snmp-server traps event cpu-util-ok
+snmp-server traps event disk-io-high
+snmp-server traps event disk-space-low
+snmp-server traps event disk-space-ok
+snmp-server traps event interface-down
+snmp-server traps event interface-up
+snmp-server traps event memusage-high
+snmp-server traps event memusage-ok
+snmp-server traps event netusage-high
+snmp-server traps event netusage-ok
+snmp-server traps event paging-high
+snmp-server traps event paging-ok
+snmp-server traps event process-crash
+snmp-server traps event process-relaunched
+snmp-server traps event test-trap
+snmp-server traps event unexpected-shutdown
+stats alarm disk_io enable
+stats alarm intf_util enable
+stats alarm fs_mnt falling clear-threshold 10
+stats alarm fs_mnt falling error-threshold 7
+stats alarm memory_pct_used enable
+stats alarm cpu_util_indiv rate-limit count long 250
+stats alarm cpu_util_indiv rate-limit count medium 150
+stats alarm fs_mnt rising error-threshold 7
+stats alarm disk_io rising error-threshold 81920
+stats alarm disk_io rising clear-threshold 51200
+stats alarm intf_util rising error-threshold 1572864000
+stats alarm intf_util rising clear-threshold 1258291200
+stats alarm paging rising error-threshold 16000
+internal set modify - /stats/config/alarm/cpu_util_indiv/trigger/node_pattern value name /system/cpu/all/busy_pct
+internal set modify - /stats/config/sample/disk_io/interval value duration_sec 3600
+internal set create - "/stats/config/alarm/fs_mnt/trigger/node_patterns/\\/system\/fs\\/mount\/\\\\\\/data\\/bytes-percent-free" value name "/system/fs/mount/\/data/bytes-percent-free"
+stats alarm cpu_util_indiv rising clear-threshold 85
+stats alarm cpu_util_indiv rising error-threshold 90
+internal set modify - /stats/config/sample/disk_io/interval value duration_sec 3600
+no snmp-server host 10.134.213.194 disable
+snmp-server host 10.134.213.194 traps version 2c atlas
+no snmp-server host 10.136.235.67 disable
+snmp-server host 10.136.235.67 traps version 2c atlas
+pm process statsd restart
+# collector
+collector add-instance 1
+collector modify-instance 1 add-adaptor tcpfix
+collector modify-instance 1 modify-adaptor tcpfix add-port 4000
+collector modify-instance 1 modify-adaptor tcpfix backup-file-system hostname 127.0.0.1
+collector modify-instance 1 modify-adaptor tcpfix backup-file-system port 9000
+collector modify-instance 1 modify-adaptor tcpfix backup-file-system user admin
+collector modify-instance 1 modify-adaptor tcpfix bin-size 300
+collector modify-instance 1 modify-adaptor tcpfix drop-alarm-clear-interval 1
+collector modify-instance 1 modify-adaptor tcpfix modify-port 4000 timezone ""
+collector modify-instance 1 modify-adaptor tcpfix peak-flow-alarm-clear-interval 1
+collector modify-instance 1 modify-adaptor tcpfix peak-flow-alarm-raise-interval 1
+collector modify-instance 1 modify-adaptor tcpfix prorate disable
+collector modify-instance 1 modify-adaptor tcpfix no-data-alarm-repeat 900
+collector modify-instance 1 modify-adaptor tcpfix drop-alarm-raise-interval 1
+collector modify-instance 1 modify-adaptor tcpfix drop-alarm-threshold 10
+collector modify-instance 1 modify-adaptor tcpfix file-format binary
+collector modify-instance 1 modify-adaptor tcpfix file-system hdfs-seq-file
+collector modify-instance 1 modify-adaptor tcpfix modify-port 4000 adapter-profile none
+collector modify-instance 1 modify-adaptor tcpfix modify-port 4000 filter-sourceIP disable
+collector modify-instance 1 modify-adaptor tcpfix modify-port 4000 router-name ""
+collector modify-instance 1 modify-adaptor tcpfix modify-port 4000 socket-IP 0.0.0.0
+collector modify-instance 1 modify-adaptor tcpfix num-bins 2
+collector modify-instance 1 modify-adaptor tcpfix auto-bin-slide enable
+collector modify-instance 1 modify-adaptor tcpfix num-objects 1000000
+collector modify-instance 1 modify-adaptor tcpfix output-directory /data/collector/1/output/tcpfix/%y/%m/%d/%h/%mi/PlymouthMeeting.TCP.
+collector modify-instance 1 modify-adaptor tcpfix stack-log-level 0
+collector modify-instance 1 modify-adaptor tcpfix timeout 600
+collector modify-instance 1 add-adaptor pilotPacket
+collector modify-instance 1 modify-adaptor pilotPacket add-port 5169
+collector modify-instance 1 modify-adaptor pilotPacket backup-file-system hostname 127.0.0.1
+collector modify-instance 1 modify-adaptor pilotPacket backup-file-system port 9000
+collector modify-instance 1 modify-adaptor pilotPacket backup-file-system user admin
+collector modify-instance 1 modify-adaptor pilotPacket bin-size 300
+collector modify-instance 1 modify-adaptor pilotPacket drop-alarm-clear-interval 1
+collector modify-instance 1 modify-adaptor pilotPacket modify-port 5169 timezone ""
+collector modify-instance 1 modify-adaptor pilotPacket peak-flow-alarm-clear-interval 1
+collector modify-instance 1 modify-adaptor pilotPacket peak-flow-alarm-raise-interval 1
+collector modify-instance 1 modify-adaptor pilotPacket prorate disable
+collector modify-instance 1 modify-adaptor pilotPacket no-data-alarm-repeat 900
+collector modify-instance 1 modify-adaptor pilotPacket drop-alarm-raise-interval 1
+collector modify-instance 1 modify-adaptor pilotPacket drop-alarm-threshold 10
+collector modify-instance 1 modify-adaptor pilotPacket file-format binary
+collector modify-instance 1 modify-adaptor pilotPacket file-system hdfs-seq-file
+collector modify-instance 1 modify-adaptor pilotPacket modify-port 5169 adapter-profile none
+collector modify-instance 1 modify-adaptor pilotPacket modify-port 5169 filter-sourceIP disable
+collector modify-instance 1 modify-adaptor pilotPacket modify-port 5169 router-name ""
+collector modify-instance 1 modify-adaptor pilotPacket modify-port 5169 socket-IP 0.0.0.0
+collector modify-instance 1 modify-adaptor pilotPacket num-bins 2
+collector modify-instance 1 modify-adaptor pilotPacket auto-bin-slide enable
+collector modify-instance 1 modify-adaptor pilotPacket num-objects 1000000
+collector modify-instance 1 modify-adaptor pilotPacket output-directory /data/collector/1/output/pilotPacket/%y/%m/%d/%h/%mi/PlymouthMeeting.RADIUS.
+collector modify-instance 1 modify-adaptor pilotPacket stack-log-level 0
+collector modify-instance 1 modify-adaptor pilotPacket timeout 600
+collector modify-instance 1 add-adaptor ipfix
+collector modify-instance 1 modify-adaptor ipfix add-port 4000
+collector modify-instance 1 modify-adaptor ipfix backup-file-system hostname 127.0.0.1
+collector modify-instance 1 modify-adaptor ipfix backup-file-system port 9000
+collector modify-instance 1 modify-adaptor ipfix backup-file-system user admin
+collector modify-instance 1 modify-adaptor ipfix bin-size 300
+collector modify-instance 1 modify-adaptor ipfix drop-alarm-clear-interval 1
+collector modify-instance 1 modify-adaptor ipfix modify-port 4000 timezone ""
+collector modify-instance 1 modify-adaptor ipfix peak-flow-alarm-clear-interval 1
+collector modify-instance 1 modify-adaptor ipfix peak-flow-alarm-raise-interval 1
+collector modify-instance 1 modify-adaptor ipfix prorate disable
+collector modify-instance 1 modify-adaptor ipfix no-data-alarm-repeat 900
+collector modify-instance 1 modify-adaptor ipfix drop-alarm-raise-interval 1
+collector modify-instance 1 modify-adaptor ipfix drop-alarm-threshold 10
+collector modify-instance 1 modify-adaptor ipfix file-format binary
+collector modify-instance 1 modify-adaptor ipfix file-system hdfs-seq-file
+collector modify-instance 1 modify-adaptor ipfix modify-port 4000 adapter-profile none
+collector modify-instance 1 modify-adaptor ipfix modify-port 4000 filter-sourceIP disable
+collector modify-instance 1 modify-adaptor ipfix modify-port 4000 router-name ""
+collector modify-instance 1 modify-adaptor ipfix modify-port 4000 socket-IP 0.0.0.0
+collector modify-instance 1 modify-adaptor ipfix num-bins 2
+collector modify-instance 1 modify-adaptor ipfix auto-bin-slide enable
+collector modify-instance 1 modify-adaptor ipfix num-objects 1000000
+collector modify-instance 1 modify-adaptor ipfix output-directory /data/collector/1/output/ipfix/%y/%m/%d/%h/%mi/PlymouthMeeting.IPFIX.
+collector modify-instance 1 modify-adaptor ipfix stack-log-level 0
+collector modify-instance 1 modify-adaptor ipfix timeout 600
+pm liveness grace-period 600
+collector modify-instance 1 modify-adaptor pilotPacket num-objects 500000
+collector modify-instance 1 modify-adaptor ipfix peak-flow-alarm-threshold 20000
+collector modify-instance 1 modify-adaptor tcpfix peak-flow-alarm-threshold 30000
+collector modify-instance 1 modify-adaptor pilotPacket peak-flow-alarm-threshold 10000
+collector modify-instance 1 modify-adaptor ipfix attribute-binning enable
+collector modify-instance 1 modify-adaptor pilotPacket attribute-binning disable
+collector modify-instance 1 modify-adaptor tcpfix attribute-binning disable
+internal set modify - /nr/collector/instance/1/adaptor/ipfix/max_bin_file_size value uint32 1
+internal set modify - /pm/process/collector/term_action value name  /nr/collector/actions/terminate
+pm process collector launch auto
+pm process collector launch enable
+pm process collector launch environment set LD_LIBRARY_PATH /opt/hadoop/c++/Linux-amd64-64/lib:/usr/java/jre1.6.0_25/lib/amd64/server:/opt/tps/lib
+pm process collector launch environment set CLASSPATH /opt/tms/java/classes:/opt/hadoop/conf:/opt/hadoop/hadoop-core-0.20.203.0.jar:/opt/hadoop/lib/commons-configuration-1.6.jar:/opt/hadoop/lib/commons-logging-1.1.1.jar:/opt/hadoop/lib/commons-lang-2.4.jar:/opt/tms/java/MemSerializer.jar
+internal set modify - /stats/config/chd/interval_average_flow/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_total_flow/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_max_flow/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_prorated_flow/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_dropped_flow/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_average_flow_hour/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_total_flow_hour/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_max_flow_hour/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_prorated_flow_hour/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_dropped_flow_hour/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_average_flow_day/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_total_flow_day/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_max_flow_day/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_prorated_flow_day/calc_partial value bool false
+internal set modify - /stats/config/chd/interval_dropped_flow_day/calc_partial value bool false
+internal set create - "/stats/config/alarm/fs_mnt/trigger/node_patterns/\\/system\/fs\\/mount\/\\\\\\/data\\\\\\/hadoop-admin\\/bytes-percent-free" value name "/system/fs/mount/\/data\/hadoop-admin/bytes-percent-free"
+pm process collector launch environment set LIBHDFS_OPTS -Xmx4096m
+pm process collector launch relaunch auto
+pm process collector restart
+# hadoop
+pmx register hadoop
+pmx register drbd
+pmx register oozie
+pmx set hadoop client 192.168.0.70
+pmx set hadoop client 192.168.0.67
+pmx set hadoop client 192.168.0.86
+pmx set hadoop client 192.168.0.83
+pmx set hadoop slave 192.168.0.93
+pmx set hadoop slave 192.168.0.77
+pmx set hadoop slave 192.168.0.90
+pmx set hadoop slave 192.168.0.74
+pmx set hadoop slave 192.168.0.80
+pmx set hadoop slave 192.168.0.96
+pmx set hadoop master 192.168.0.71
+pmx set hadoop namenode UNINIT
+pmx set hadoop oozieServer 192.168.0.71
+internal set create - /tps/process/hadoop/attribute/mapred.child.java.opts/value value string -Xmx3584m
+internal set create - /tps/process/hadoop/attribute/mapred.tasktracker.reduce.tasks.maximum/value value string 4
+internal set create - /tps/process/hadoop/attribute/io.sort.spill.percent/value value string 0.50
+internal set modify - /tps/process/hadoop/attribute/heartbeat.recheck.interval value string heartbeat.recheck.interval
+internal set modify - /tps/process/hadoop/attribute/heartbeat.recheck.interval/value value string 130000
+# oozie
+pmx set oozie namenode GVS-VZWLAB-DC-COL1
+pmx set oozie oozieServer 192.168.0.71
+pmx set oozie sshHost 127.0.0.1
+pmx set oozie snapshotPath /data/snapshots
+pmx subshell oozie add job SubscriberBytes SubscriberBytes /opt/etc/oozie/SubscriberBytes
+pmx subshell oozie set job SubscriberBytes attribute jobFrequency 1
+pmx subshell oozie set job SubscriberBytes attribute frequencyUnit month
+pmx subshell oozie set job SubscriberBytes action SubBytesMapRedAction attribute timeout 10
+pmx subshell oozie set job SubscriberBytes action DistcpBytes attribute timeout 0
+pmx subshell oozie set job SubscriberBytes attribute jobStart 2013-03-13T08:00Z
+pmx subshell oozie set job SubscriberBytes attribute jobEnd 2099-12-31T00:00Z
+pmx subshell oozie add job Atlas AtlasCubes /opt/etc/oozie/AtlasCubes
+pmx subshell oozie set job Atlas attribute binInterval 3600
+pmx subshell oozie set job Atlas attribute jobFrequency 60
+pmx subshell oozie set job Atlas action WngIBCreator attribute timeout -1
+pmx subshell oozie set job Atlas action Rollup attribute timeout 0
+pmx subshell oozie set job Atlas action BaseCubes attribute timeout -1
+pmx subshell oozie set job Atlas action SubcrDev attribute timeout 0
+pmx subshell oozie set job Atlas action SubscriberIBCreator attribute timeout -1
+pmx subshell oozie set job Atlas action SubcrBytesAgg attribute timeout 0
+pmx subshell oozie set job Atlas action TopN attribute timeout 0
+pmx subshell oozie set job Atlas attribute jobStart 2013-03-13T08:00Z
+pmx subshell oozie set job Atlas attribute jobEnd 2099-12-31T00:00Z
+pmx subshell oozie add job CleanupCollector CleanupDataset /opt/etc/oozie/CleanupDataset
+pmx subshell oozie set job CleanupCollector attribute jobFrequency 1
+pmx subshell oozie set job CleanupCollector attribute frequencyUnit hour
+pmx subshell oozie set job CleanupCollector attribute jobStart 2013-03-13T08:00Z
+pmx subshell oozie set job CleanupCollector attribute jobEnd 2099-12-31T00:00Z
+pmx subshell oozie add job ConsistentTopSubcr ConsistentTopSubcr /opt/etc/oozie/ConsistentTopSubcr
+pmx subshell oozie set job ConsistentTopSubcr attribute jobFrequency 10080
+pmx subshell oozie set job ConsistentTopSubcr action ConsistentSubcrs attribute timeout -1
+pmx subshell oozie set job ConsistentTopSubcr attribute jobStart 2013-03-13T08:00Z
+pmx subshell oozie set job ConsistentTopSubcr attribute jobEnd 2099-12-31T00:00Z
+pmx subshell oozie add job CleanupLogs CleanupLogs /opt/etc/oozie/CleanupLogs
+pmx subshell oozie set job CleanupLogs attribute jobFrequency 1
+pmx subshell oozie set job CleanupLogs attribute frequencyUnit day
+pmx subshell oozie set job CleanupLogs attribute jobStart 2013-03-13T08:00Z
+pmx subshell oozie set job CleanupLogs attribute jobEnd 2099-12-31T00:00Z
+pmx subshell oozie add job CleanupMonthlyData CleanupDataset /opt/etc/oozie/CleanupDataset
+pmx subshell oozie set job CleanupMonthlyData attribute jobFrequency 1
+pmx subshell oozie set job CleanupMonthlyData attribute frequencyUnit day
+pmx subshell oozie set job CleanupMonthlyData attribute jobStart 2013-03-13T08:00Z
+pmx subshell oozie set job CleanupMonthlyData attribute jobEnd 2099-12-31T00:00Z
+pmx subshell oozie add job CleanupAtlas CleanupAtlas /opt/etc/oozie/CleanupAtlas
+pmx subshell oozie set job CleanupAtlas attribute jobFrequency 1
+pmx subshell oozie set job CleanupAtlas attribute frequencyUnit day
+pmx subshell oozie set job CleanupAtlas attribute jobStart 2013-03-13T08:00Z
+pmx subshell oozie set job CleanupAtlas attribute jobEnd 2099-12-31T00:00Z
+pmx subshell oozie add job TopSubcr TopSubcr /opt/etc/oozie/TopSubcr
+pmx subshell oozie set job TopSubcr attribute jobFrequency 10080
+pmx subshell oozie set job TopSubcr action BytesAgg attribute timeout -1
+pmx subshell oozie set job TopSubcr action TopSubcrMerge attribute timeout 0
+pmx subshell oozie set job TopSubcr action TopSubscribers attribute timeout 0
+pmx subshell oozie set job TopSubcr attribute jobStart 2013-03-13T08:00Z
+pmx subshell oozie set job TopSubcr attribute jobEnd 2099-12-31T00:00Z
+pmx subshell oozie add job Distcp DistcpJob /opt/etc/oozie/Distcp
+pmx subshell oozie set job Distcp attribute jobFrequency 1
+pmx subshell oozie set job Distcp attribute frequencyUnit hour
+pmx subshell oozie set job Distcp action DistcpAction attribute timeout -1
+pmx subshell oozie set job Distcp attribute jobStart 2013-03-13T08:00Z
+pmx subshell oozie set job Distcp attribute jobEnd 2099-12-31T00:00Z
+pmx register backup_hdfs
+pmx set backup_hdfs namenode UNINIT
+pmx subshell oozie set job Atlas action SubscriberIBCreator attribute binaryInput true
+pmx subshell oozie set job Atlas action SubscriberIBCreator attribute outputDataset atlas_subib
+pmx subshell oozie set job Atlas action SubscriberIBCreator attribute inputDatasets atlas_selfipcleanup
+pmx subshell oozie set job Atlas action SubscriberIBCreator attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job Atlas action SubscriberIBCreator attribute mainClass com.guavus.mapred.atlas.job.subscriberib.SubscriberIBCreator
+pmx subshell oozie set job Atlas action SubscriberIBCreator attribute snapshotDatasets atlas_subib
+pmx subshell oozie set job Atlas action SubscriberIBCreator attribute configFile /opt/etc/oozie/AtlasCubes/SubscriberIBCreator.xml
+pmx subshell oozie set job Atlas action WngIBCreator attribute binaryInput true
+pmx subshell oozie set job Atlas action WngIBCreator attribute outputDataset atlas_wngib
+pmx subshell oozie set job Atlas action WngIBCreator attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job Atlas action WngIBCreator attribute mainClass com.guavus.mapred.atlas.job.wng.WngIBCreator
+pmx subshell oozie set job Atlas action WngIBCreator attribute snapshotDatasets atlas_wngib
+pmx subshell oozie set job Atlas action WngIBCreator attribute configFile /opt/etc/oozie/AtlasCubes/WngIBCreator.xml
+pmx subshell oozie set job Atlas action BaseCubes attribute outputDataset atlas_basecube
+pmx subshell oozie set job Atlas action BaseCubes attribute binaryInput true
+pmx subshell oozie set job Atlas action BaseCubes attribute mainClass com.guavus.mapred.atlas.job.BaseCubeJob.AtlasCubes
+pmx subshell oozie set job Atlas action SubscriberibIpPortCleanup attribute binaryInput true
+pmx subshell oozie set job Atlas action SubscriberibIpPortCleanup attribute outputDataset atlas_ipportcleanup
+pmx subshell oozie set job Atlas action SubscriberibIpPortCleanup attribute inputDatasets atlas_subib
+pmx subshell oozie set job Atlas action SubscriberibIpPortCleanup attribute mainClass com.guavus.mapred.atlas.job.SubscriberibIpPortCleanup.Main
+pmx subshell oozie set job Atlas action SubscriberibIpPortCleanup attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job Atlas action SubscriberibIpPortCleanup attribute configFile /opt/etc/oozie/AtlasCubes/AtlasCubes.xml
+pmx subshell oozie set job Atlas action SubscriberibIpPortCleanup attribute timeout 0
+pmx subshell oozie set job Atlas action SubscriberibSelfIpCleanup attribute binaryInput true
+pmx subshell oozie set job Atlas action SubscriberibSelfIpCleanup attribute outputDataset atlas_selfipcleanup
+pmx subshell oozie set job Atlas action SubscriberibSelfIpCleanup attribute inputDatasets atlas_ipportcleanup
+pmx subshell oozie set job Atlas action SubscriberibSelfIpCleanup attribute mainClass com.guavus.mapred.atlas.job.SubscriberibSelfIpCleanup.Main
+pmx subshell oozie set job Atlas action SubscriberibSelfIpCleanup attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job Atlas action SubscriberibSelfIpCleanup attribute configFile /opt/etc/oozie/AtlasCubes/AtlasCubes.xml
+pmx subshell oozie set job Atlas action SubscriberibSelfIpCleanup attribute timeout 0
+pmx subshell oozie add dataset atlas_selfipcleanup
+pmx subshell oozie set dataset atlas_selfipcleanup attribute startOffset 1
+pmx subshell oozie set dataset atlas_selfipcleanup attribute frequency 60
+pmx subshell oozie set dataset atlas_selfipcleanup attribute endOffset 1
+pmx subshell oozie set dataset atlas_selfipcleanup attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_selfipcleanup attribute outputOffset 0
+pmx subshell oozie set dataset atlas_selfipcleanup attribute path /data/output/SubscriberIBSelfIpCleanup/%Y/%M/%D/%H
+pmx subshell oozie set dataset atlas_selfipcleanup attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_selfipcleanup attribute pathType hdfs
+pmx subshell oozie add dataset atlas_ipportcleanup
+pmx subshell oozie set dataset atlas_ipportcleanup attribute startOffset 0
+pmx subshell oozie set dataset atlas_ipportcleanup attribute frequency 60
+pmx subshell oozie set dataset atlas_ipportcleanup attribute endOffset 0
+pmx subshell oozie set dataset atlas_ipportcleanup attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_ipportcleanup attribute outputOffset 0
+pmx subshell oozie set dataset atlas_ipportcleanup attribute path /data/output/SubscriberIBIpPortCleanup/%Y/%M/%D/%H
+pmx subshell oozie set dataset atlas_ipportcleanup attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_ipportcleanup attribute pathType hdfs
+pmx subshell oozie set job Atlas action SubscriberIBCreator attribute inputDatasets atlas_radius_1
+pmx subshell oozie set job Atlas action BaseCubes attribute inputDatasets atlas_ipfix_1
+pmx subshell oozie set job Atlas action BaseCubes attribute inputDatasets atlas_tcpfix_1
+pmx subshell oozie set job CleanupCollector action CleanupDatasetAction attribute cleanupDatasets atlas_ipfix_1
+pmx subshell oozie set job CleanupCollector action CleanupDatasetAction attribute cleanupDatasets atlas_tcpfix_1
+pmx subshell oozie set job CleanupCollector action CleanupDatasetAction attribute cleanupDatasets atlas_radius_1
+pmx subshell oozie set job Atlas action SubscriberIBCreator attribute inputDatasets atlas_radius_2
+pmx subshell oozie set job Atlas action BaseCubes attribute inputDatasets atlas_ipfix_2
+pmx subshell oozie set job Atlas action BaseCubes attribute inputDatasets atlas_tcpfix_2
+pmx subshell oozie set job CleanupCollector action CleanupDatasetAction attribute cleanupDatasets atlas_ipfix_2
+pmx subshell oozie set job CleanupCollector action CleanupDatasetAction attribute cleanupDatasets atlas_tcpfix_2
+pmx subshell oozie set job CleanupCollector action CleanupDatasetAction attribute cleanupDatasets atlas_radius_2
+pmx subshell oozie set job Atlas action BaseCubes attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job Atlas action BaseCubes attribute configFile /opt/etc/oozie/AtlasCubes/BaseCubes.xml
+pmx subshell oozie set job Atlas action SubcrBytesAgg attribute outputDataset atlas_subbytes
+pmx subshell oozie set job Atlas action SubcrBytesAgg attribute inputDatasets atlas_basecube
+pmx subshell oozie set job Atlas action SubcrBytesAgg attribute mainClass com.guavus.mapred.atlas.job.SubscriberBytesAggregator.SubscriberBytesAggregator
+pmx subshell oozie set job Atlas action SubcrBytesAgg attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job Atlas action SubcrBytesAgg attribute snapshotDatasets atlas_subbytes
+pmx subshell oozie set job Atlas action SubcrBytesAgg attribute configFile /opt/etc/oozie/AtlasCubes/AtlasCubes.xml
+pmx subshell oozie set job Atlas action TopN attribute outputDataset atlas_topn
+pmx subshell oozie set job Atlas action TopN attribute mainClass com.guavus.mapred.atlas.job.TopNJob.TopN
+pmx subshell oozie set job Atlas action TopN attribute topNHApp 300
+pmx subshell oozie set job Atlas action TopN attribute topDev 200
+pmx subshell oozie set job Atlas action TopN attribute inputDatasets atlas_basecube
+pmx subshell oozie set job Atlas action TopN attribute topApp 300
+pmx subshell oozie set job Atlas action TopN attribute topSP 300
+pmx subshell oozie set job Atlas action TopN attribute topUrlBins 300
+pmx subshell oozie set job Atlas action TopN attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job Atlas action TopN attribute configFile /opt/etc/oozie/AtlasCubes/TopN.json
+pmx subshell oozie set job Atlas action SubcrDev attribute outputDataset atlas_subdev
+pmx subshell oozie set job Atlas action SubcrDev attribute inputDatasets atlas_basecube
+pmx subshell oozie set job Atlas action SubcrDev attribute mainClass com.guavus.mapred.atlas.job.subdevmapib.SubDevMapIBCreator
+pmx subshell oozie set job Atlas action SubcrDev attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job Atlas action SubcrDev attribute snapshotDatasets atlas_subdev
+pmx subshell oozie set job Atlas action SubcrDev attribute configFile /opt/etc/oozie/AtlasCubes/AtlasCubes.xml
+pmx subshell oozie set job Atlas action Rollup attribute outputDataset atlas_rollup
+pmx subshell oozie set job Atlas action Rollup attribute inputDatasets atlas_basecube
+pmx subshell oozie set job Atlas action Rollup attribute mainClass com.guavus.mapred.atlas.job.rollup.Main
+pmx subshell oozie set job Atlas action Rollup attribute topnDataset atlas_topn
+pmx subshell oozie set job Atlas action Rollup attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job Atlas action Rollup attribute configFile /opt/etc/oozie/AtlasCubes/Rollup.json
+pmx subshell oozie add dataset atlas_radius_1
+pmx subshell oozie set dataset atlas_radius_1 attribute startOffset 12
+pmx subshell oozie set dataset atlas_radius_1 attribute frequency 5
+pmx subshell oozie set dataset atlas_radius_1 attribute endOffset 1
+pmx subshell oozie set dataset atlas_radius_1 attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_radius_1 attribute outputOffset 0
+pmx subshell oozie set dataset atlas_radius_1 attribute path /data/collector/1/output/pilotPacket/%Y/%M/%D/%H/%mi
+pmx subshell oozie set dataset atlas_radius_1 attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_radius_1 attribute pathType hdfs
+pmx subshell oozie add dataset atlas_radius_2
+pmx subshell oozie set dataset atlas_radius_2 attribute startOffset 12
+pmx subshell oozie set dataset atlas_radius_2 attribute frequency 5
+pmx subshell oozie set dataset atlas_radius_2 attribute endOffset 1
+pmx subshell oozie set dataset atlas_radius_2 attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_radius_2 attribute outputOffset 0
+pmx subshell oozie set dataset atlas_radius_2 attribute path /data/collector/2/output/pilotPacket/%Y/%M/%D/%H/%mi
+pmx subshell oozie set dataset atlas_radius_2 attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_radius_2 attribute pathType hdfs
+pmx subshell oozie add dataset atlas_subib
+pmx subshell oozie set dataset atlas_subib attribute startOffset 0
+pmx subshell oozie set dataset atlas_subib attribute frequency 60
+pmx subshell oozie set dataset atlas_subib attribute endOffset 0
+pmx subshell oozie set dataset atlas_subib attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_subib attribute outputOffset 0
+pmx subshell oozie set dataset atlas_subib attribute path /data/output/SubscriberIB/%Y/%M/%D/%H
+pmx subshell oozie set dataset atlas_subib attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_subib attribute pathType hdfs
+pmx subshell oozie add dataset atlas_wngib
+pmx subshell oozie set dataset atlas_wngib attribute startOffset 1
+pmx subshell oozie set dataset atlas_wngib attribute frequency 60
+pmx subshell oozie set dataset atlas_wngib attribute endOffset 1
+pmx subshell oozie set dataset atlas_wngib attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_wngib attribute outputOffset 0
+pmx subshell oozie set dataset atlas_wngib attribute path /data/output/WngIB/%Y/%M/%D/%H
+pmx subshell oozie set dataset atlas_wngib attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_wngib attribute pathType hdfs
+pmx subshell oozie add dataset atlas_ipfix_1
+pmx subshell oozie set dataset atlas_ipfix_1 attribute startOffset 12
+pmx subshell oozie set dataset atlas_ipfix_1 attribute frequency 5
+pmx subshell oozie set dataset atlas_ipfix_1 attribute endOffset 1
+pmx subshell oozie set dataset atlas_ipfix_1 attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_ipfix_1 attribute outputOffset 0
+pmx subshell oozie set dataset atlas_ipfix_1 attribute path /data/collector/1/output/ipfix/%Y/%M/%D/%H/%mi/*
+pmx subshell oozie set dataset atlas_ipfix_1 attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_ipfix_1 attribute pathType hdfs
+pmx subshell oozie add dataset atlas_ipfix_2
+pmx subshell oozie set dataset atlas_ipfix_2 attribute startOffset 12
+pmx subshell oozie set dataset atlas_ipfix_2 attribute frequency 5
+pmx subshell oozie set dataset atlas_ipfix_2 attribute endOffset 1
+pmx subshell oozie set dataset atlas_ipfix_2 attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_ipfix_2 attribute outputOffset 0
+pmx subshell oozie set dataset atlas_ipfix_2 attribute path /data/collector/2/output/ipfix/%Y/%M/%D/%H/%mi/*
+pmx subshell oozie set dataset atlas_ipfix_2 attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_ipfix_2 attribute pathType hdfs
+pmx subshell oozie add dataset atlas_tcpfix_1
+pmx subshell oozie set dataset atlas_tcpfix_1 attribute startOffset 12
+pmx subshell oozie set dataset atlas_tcpfix_1 attribute frequency 5
+pmx subshell oozie set dataset atlas_tcpfix_1 attribute endOffset 1
+pmx subshell oozie set dataset atlas_tcpfix_1 attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_tcpfix_1 attribute outputOffset 0
+pmx subshell oozie set dataset atlas_tcpfix_1 attribute path /data/collector/1/output/tcpfix/%Y/%M/%D/%H/%mi
+pmx subshell oozie set dataset atlas_tcpfix_1 attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_tcpfix_1 attribute pathType hdfs
+pmx subshell oozie add dataset atlas_tcpfix_2
+pmx subshell oozie set dataset atlas_tcpfix_2 attribute startOffset 12
+pmx subshell oozie set dataset atlas_tcpfix_2 attribute frequency 5
+pmx subshell oozie set dataset atlas_tcpfix_2 attribute endOffset 1
+pmx subshell oozie set dataset atlas_tcpfix_2 attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_tcpfix_2 attribute outputOffset 0
+pmx subshell oozie set dataset atlas_tcpfix_2 attribute path /data/collector/2/output/tcpfix/%Y/%M/%D/%H/%mi
+pmx subshell oozie set dataset atlas_tcpfix_2 attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_tcpfix_2 attribute pathType hdfs
+pmx subshell oozie add dataset atlas_basecube
+pmx subshell oozie set dataset atlas_basecube attribute startOffset 0
+pmx subshell oozie set dataset atlas_basecube attribute frequency 60
+pmx subshell oozie set dataset atlas_basecube attribute endOffset 0
+pmx subshell oozie set dataset atlas_basecube attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_basecube attribute outputOffset 0
+pmx subshell oozie set dataset atlas_basecube attribute path /data/output/AtlasBaseCubes/%Y/%M/%D/%H
+pmx subshell oozie set dataset atlas_basecube attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_basecube attribute pathType hdfs
+pmx subshell oozie add dataset atlas_topn
+pmx subshell oozie set dataset atlas_topn attribute startOffset 0
+pmx subshell oozie set dataset atlas_topn attribute frequency 60
+pmx subshell oozie set dataset atlas_topn attribute endOffset 0
+pmx subshell oozie set dataset atlas_topn attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_topn attribute outputOffset 0
+pmx subshell oozie set dataset atlas_topn attribute path /data/output/TopN/%Y/%M/%D/%H
+pmx subshell oozie set dataset atlas_topn attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_topn attribute pathType hdfs
+pmx subshell oozie add dataset atlas_subbytes
+pmx subshell oozie set dataset atlas_subbytes attribute startOffset 1
+pmx subshell oozie set dataset atlas_subbytes attribute frequency 60
+pmx subshell oozie set dataset atlas_subbytes attribute endOffset 1
+pmx subshell oozie set dataset atlas_subbytes attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_subbytes attribute outputOffset 0
+pmx subshell oozie set dataset atlas_subbytes attribute path /data/output/AtlasSubcrBytes/%Y/%M/%D/%H
+pmx subshell oozie set dataset atlas_subbytes attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_subbytes attribute pathType hdfs
+pmx subshell oozie add dataset atlas_subdev
+pmx subshell oozie set dataset atlas_subdev attribute startOffset 1
+pmx subshell oozie set dataset atlas_subdev attribute frequency 60
+pmx subshell oozie set dataset atlas_subdev attribute endOffset 1
+pmx subshell oozie set dataset atlas_subdev attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_subdev attribute outputOffset 0
+pmx subshell oozie set dataset atlas_subdev attribute path /data/output/AtlasSubDevs/%Y/%M/%D/%H
+pmx subshell oozie set dataset atlas_subdev attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_subdev attribute pathType hdfs
+pmx subshell oozie add dataset atlas_rollup
+pmx subshell oozie set dataset atlas_rollup attribute startOffset 0
+pmx subshell oozie set dataset atlas_rollup attribute frequency 60
+pmx subshell oozie set dataset atlas_rollup attribute endOffset 0
+pmx subshell oozie set dataset atlas_rollup attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_rollup attribute outputOffset 0
+pmx subshell oozie set dataset atlas_rollup attribute path /data/output/AtlasRollupCubes/%Y/%M/%D/%H
+pmx subshell oozie set dataset atlas_rollup attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_rollup attribute pathType hdfs
+pmx subshell oozie add dataset DistcpCubes
+pmx subshell oozie set dataset DistcpCubes attribute startOffset 0
+pmx subshell oozie set dataset DistcpCubes attribute frequency 60
+pmx subshell oozie set dataset DistcpCubes attribute endOffset 0
+pmx subshell oozie set dataset DistcpCubes attribute doneFile _DONE
+pmx subshell oozie set dataset DistcpCubes attribute outputOffset 0
+pmx subshell oozie set dataset DistcpCubes attribute path /data/output/Cubes/VZWLAB/%Y/%M/%D/%H
+pmx subshell oozie set dataset DistcpCubes attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset DistcpCubes attribute pathType hdfs
+pmx subshell oozie set job Distcp action DistcpAction attribute destDataset DistcpCubes
+pmx subshell oozie set job Distcp action DistcpAction attribute destNamenode GVS-VZWLAB-AC-ATLAS20
+pmx subshell oozie set job Distcp action DistcpAction attribute retryCount 3
+pmx subshell oozie set job Distcp action DistcpAction attribute srcNamenode GVS-VZWLAB-DC-COL1
+pmx subshell oozie set job Distcp action DistcpAction attribute srcDataset atlas_rollup
+pmx subshell oozie set job Distcp action DistcpAction attribute retrySleep 60
+pmx subshell oozie set job SubscriberBytes action SubBytesMapRedAction attribute outputDataset MonthlyBytes
+pmx subshell oozie set job SubscriberBytes action SubBytesMapRedAction attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job SubscriberBytes action SubBytesMapRedAction attribute mainClass com.guavus.mapred.atlas.job.SubscriberBytesAggregator.SubscriberBytesAggregator
+pmx subshell oozie set job SubscriberBytes action SubBytesMapRedAction attribute configFile /opt/etc/oozie/SubscriberBytes/config.xml
+pmx subshell oozie set job SubscriberBytes action SubBytesMapRedAction attribute inputDatasets BytesAgg_month
+pmx subshell oozie set job SubscriberBytes action DistcpBytes attribute destDataset MonthlyBytesToNEC
+pmx subshell oozie set job SubscriberBytes action DistcpBytes attribute destNamenode GVS-VZWLAB-AC-ATLAS20
+pmx subshell oozie set job SubscriberBytes action DistcpBytes attribute retryCount 1
+pmx subshell oozie set job SubscriberBytes action DistcpBytes attribute srcNamenode GVS-VZWLAB-DC-COL1
+pmx subshell oozie set job SubscriberBytes action DistcpBytes attribute srcDataset MonthlyBytes
+pmx subshell oozie set job SubscriberBytes action DistcpBytes attribute retrySleep 60
+pmx subshell oozie add dataset BytesAgg_month
+pmx subshell oozie set dataset BytesAgg_month attribute startOffset 31
+pmx subshell oozie set dataset BytesAgg_month attribute frequency 1440
+pmx subshell oozie set dataset BytesAgg_month attribute endOffset 1
+pmx subshell oozie set dataset BytesAgg_month attribute doneFile _DONE
+pmx subshell oozie set dataset BytesAgg_month attribute outputOffset 0
+pmx subshell oozie set dataset BytesAgg_month attribute path /data/output/AtlasSubcrBytes/%Y/%M/%D/23
+pmx subshell oozie set dataset BytesAgg_month attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset BytesAgg_month attribute pathType hdfs
+pmx subshell oozie add dataset MonthlyBytes
+pmx subshell oozie set dataset MonthlyBytes attribute startOffset 0
+pmx subshell oozie set dataset MonthlyBytes attribute frequency 1
+pmx subshell oozie set dataset MonthlyBytes attribute frequencyUnit month
+pmx subshell oozie set dataset MonthlyBytes attribute endOffset 0
+pmx subshell oozie set dataset MonthlyBytes attribute doneFile _DONE
+pmx subshell oozie set dataset MonthlyBytes attribute outputOffset 0
+pmx subshell oozie set dataset MonthlyBytes attribute path /data/output/MonthlyBytes/%Y/%M
+pmx subshell oozie set dataset MonthlyBytes attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset MonthlyBytes attribute pathType hdfs
+pmx subshell oozie add dataset MonthlyBytesToNEC
+pmx subshell oozie set dataset MonthlyBytesToNEC attribute startOffset 0
+pmx subshell oozie set dataset MonthlyBytesToNEC attribute frequency 1
+pmx subshell oozie set dataset MonthlyBytesToNEC attribute frequencyUnit month
+pmx subshell oozie set dataset MonthlyBytesToNEC attribute endOffset 0
+pmx subshell oozie set dataset MonthlyBytesToNEC attribute doneFile _DONE
+pmx subshell oozie set dataset MonthlyBytesToNEC attribute outputOffset 0
+pmx subshell oozie set dataset MonthlyBytesToNEC attribute path /data/output/MonthlyBytes/VZWLAB/%Y/%M
+pmx subshell oozie set dataset MonthlyBytesToNEC attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset MonthlyBytesToNEC attribute pathType hdfs
+pmx subshell oozie set job TopSubcr action BytesAgg attribute outputDataset WeeklyBytes
+pmx subshell oozie set job TopSubcr action BytesAgg attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job TopSubcr action BytesAgg attribute mainClass com.guavus.mapred.atlas.job.SubscriberBytesAggregator.SubscriberBytesAggregator
+pmx subshell oozie set job TopSubcr action BytesAgg attribute configFile /opt/etc/oozie/TopSubcr/config.xml
+pmx subshell oozie set job TopSubcr action BytesAgg attribute inputDatasets BytesAgg
+pmx subshell oozie set job TopSubcr action TopSubscribers attribute outputDataset TopSubcrWeekly
+pmx subshell oozie set job TopSubcr action TopSubscribers attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job TopSubcr action TopSubscribers attribute inputDatasets WeeklyBytes
+pmx subshell oozie set job TopSubcr action TopSubscribers attribute topSubcrFlows 10000
+pmx subshell oozie set job TopSubcr action TopSubscribers attribute mainClass com.guavus.mapred.atlas.job.TopSubscriber.TopSubscriber
+pmx subshell oozie set job TopSubcr action TopSubscribers attribute configFile /opt/etc/oozie/TopSubcr/TopSubscribers.xml
+pmx subshell oozie set job TopSubcr action TopSubscribers attribute topSubcrBytes 10000
+pmx subshell oozie set job TopSubcr action TopSubcrMerge attribute outputDataset TopSubcrMerge
+pmx subshell oozie set job TopSubcr action TopSubcrMerge attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job TopSubcr action TopSubcrMerge attribute mainClass com.guavus.mapred.atlas.job.TopSubscriberMerge.TopSubscriberMerge
+pmx subshell oozie set job TopSubcr action TopSubcrMerge attribute configFile /opt/etc/oozie/TopSubcr/config.xml
+pmx subshell oozie set job TopSubcr action TopSubcrMerge attribute inputDatasets TopSubcrWeekly
+pmx subshell oozie add dataset BytesAgg
+pmx subshell oozie set dataset BytesAgg attribute startOffset 7
+pmx subshell oozie set dataset BytesAgg attribute frequency 1440
+pmx subshell oozie set dataset BytesAgg attribute endOffset 1
+pmx subshell oozie set dataset BytesAgg attribute doneFile _DONE
+pmx subshell oozie set dataset BytesAgg attribute outputOffset 0
+pmx subshell oozie set dataset BytesAgg attribute path /data/output/AtlasSubcrBytes/%Y/%M/%D/23
+pmx subshell oozie set dataset BytesAgg attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset BytesAgg attribute pathType hdfs
+pmx subshell oozie add dataset WeeklyBytes
+pmx subshell oozie set dataset WeeklyBytes attribute startOffset 0
+pmx subshell oozie set dataset WeeklyBytes attribute frequency 10080
+pmx subshell oozie set dataset WeeklyBytes attribute endOffset 0
+pmx subshell oozie set dataset WeeklyBytes attribute doneFile _DONE
+pmx subshell oozie set dataset WeeklyBytes attribute outputOffset 0
+pmx subshell oozie set dataset WeeklyBytes attribute path /data/output/BytesAggWeekly/%Y/%M/%D
+pmx subshell oozie set dataset WeeklyBytes attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset WeeklyBytes attribute pathType hdfs
+pmx subshell oozie add dataset TopSubcrWeekly
+pmx subshell oozie set dataset TopSubcrWeekly attribute startOffset 0
+pmx subshell oozie set dataset TopSubcrWeekly attribute frequency 10080
+pmx subshell oozie set dataset TopSubcrWeekly attribute endOffset 0
+pmx subshell oozie set dataset TopSubcrWeekly attribute doneFile _DONE
+pmx subshell oozie set dataset TopSubcrWeekly attribute outputOffset 0
+pmx subshell oozie set dataset TopSubcrWeekly attribute path /data/output/TopSubcribers/%Y/%M/%D
+pmx subshell oozie set dataset TopSubcrWeekly attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset TopSubcrWeekly attribute pathType hdfs
+pmx subshell oozie add dataset TopSubcrMerge
+pmx subshell oozie set dataset TopSubcrMerge attribute startOffset 2
+pmx subshell oozie set dataset TopSubcrMerge attribute frequency 10080
+pmx subshell oozie set dataset TopSubcrMerge attribute endOffset 0
+pmx subshell oozie set dataset TopSubcrMerge attribute doneFile _DONE
+pmx subshell oozie set dataset TopSubcrMerge attribute outputOffset 0
+pmx subshell oozie set dataset TopSubcrMerge attribute path /data/output/TopSubcrMerge/%Y/%M/%D
+pmx subshell oozie set dataset TopSubcrMerge attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset TopSubcrMerge attribute pathType hdfs
+pmx subshell oozie set job ConsistentTopSubcr action ConsistentSubcrs attribute outputDataset ConsistentSubcr
+pmx subshell oozie set job ConsistentTopSubcr action ConsistentSubcrs attribute jarFile /opt/tms/java/CubeCreator-atlas3.0.jar
+pmx subshell oozie set job ConsistentTopSubcr action ConsistentSubcrs attribute inputDatasets TopSubcrMerge
+pmx subshell oozie set job ConsistentTopSubcr action ConsistentSubcrs attribute topSubcrFlows 100
+pmx subshell oozie set job ConsistentTopSubcr action ConsistentSubcrs attribute topSubcrBytesFlows 100
+pmx subshell oozie set job ConsistentTopSubcr action ConsistentSubcrs attribute mainClass com.guavus.mapred.atlas.job.ConsistentTopSubscriber.ConsistentTopSubscriber
+pmx subshell oozie set job ConsistentTopSubcr action ConsistentSubcrs attribute configFile /opt/etc/oozie/ConsistentTopSubcr/ConsistentSubcrs.xml
+pmx subshell oozie set job ConsistentTopSubcr action ConsistentSubcrs attribute topSubcrBytes 100
+pmx subshell oozie set job ConsistentTopSubcr action CopyIB attribute srcDataset ConsistentSubcr
+pmx subshell oozie add dataset ConsistentSubcr
+pmx subshell oozie set dataset ConsistentSubcr attribute startOffset 0
+pmx subshell oozie set dataset ConsistentSubcr attribute frequency 10080
+pmx subshell oozie set dataset ConsistentSubcr attribute endOffset 0
+pmx subshell oozie set dataset ConsistentSubcr attribute doneFile _DONE
+pmx subshell oozie set dataset ConsistentSubcr attribute outputOffset 0
+pmx subshell oozie set dataset ConsistentSubcr attribute path /data/output/ConsistentTopSubcr/%Y/%M/%D
+pmx subshell oozie set dataset ConsistentSubcr attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset ConsistentSubcr attribute pathType hdfs
+pmx subshell oozie set job CleanupCollector action CleanupDatasetAction attribute cleanupOffset 18
+pmx subshell oozie set job CleanupLogs action CleanupLogAction attribute cleanupOffset 5
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupOffset 1
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets atlas_basecube
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets atlas_topn
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets atlas_subbytes
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets atlas_subdev
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets atlas_rollup
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets WeeklyBytes
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets TopSubcrWeekly
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets TopSubcrMerge
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets ConsistentSubcr
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets MonthlyBytes
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets atlas_wngib
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets atlas_subib
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets atlas_ipportcleanup
+pmx subshell oozie set job CleanupAtlas action CleanupAction attribute cleanupDatasets atlas_selfipcleanup
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupOffset 33
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets BytesAgg_month
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets TopSubcrWeekly
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets atlas_ipportcleanup
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets atlas_wngib
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets atlas_subdev
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets TopSubcrMerge
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets atlas_subbytes
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets MonthlyBytes
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets WeeklyBytes
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets atlas_subib
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets atlas_basecube
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets ConsistentSubcr
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets atlas_selfipcleanup
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets atlas_topn
+pmx subshell oozie set job CleanupMonthlyData action CleanupDatasetAction attribute cleanupDatasets atlas_rollup
+pmx subshell oozie set job Atlas action WngIBCreator attribute inputDatasets atlas_wng
+pmx subshell oozie add dataset atlas_wng
+pmx subshell oozie set dataset atlas_wng attribute startOffset 12
+pmx subshell oozie set dataset atlas_wng attribute frequency 5
+pmx subshell oozie set dataset atlas_wng attribute endOffset 1
+pmx subshell oozie set dataset atlas_wng attribute doneFile _DONE
+pmx subshell oozie set dataset atlas_wng attribute outputOffset 0
+pmx subshell oozie set dataset atlas_wng attribute path /data/collector/output/wng/%Y/%M/%D/%H/%mi
+pmx subshell oozie set dataset atlas_wng attribute startTime 2013-03-13T08:00Z
+pmx subshell oozie set dataset atlas_wng attribute pathType hdfs
+# drbd
+pmx set drbd hosttwo VZWLAB-CMDS-A-AL-GVS10-01
+pmx set drbd hosttwoip 192.168.0.70
+pmx set drbd selfip 192.168.0.67
+pmx set drbd hostone VZWLAB-CMDS-A-AL-GVS09-01
+pmx set drbd hostoneip 192.168.0.67
+pmx set drbd waittime 300
+# sm
+sm service create PS::BLOCKING:1
+sm service modify PS::BLOCKING:1 service-info ps-server-1
+sm service-info create ps-server-1
+sm service-info modify ps-server-1 host 192.168.152.200
+sm service-info modify ps-server-1 port 11111
+sm service-info modify ps-server-1 service-type TCP_SOCKET
+# cluster
+cluster id col1
+cluster name GVS-VZWLAB-DC-COL1
+cluster interface icnb
+cluster expected-nodes 2
+cluster master address vip 192.168.0.71 255.255.255.0
+cluster master interface icnb
+cluster enable

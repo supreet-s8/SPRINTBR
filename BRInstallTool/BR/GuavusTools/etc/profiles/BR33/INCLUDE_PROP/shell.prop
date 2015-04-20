@@ -1,0 +1,6 @@
+#
+# Shell configuration
+#
+
+shell.commands.2=mkdir -p /data/guarav
+shell.commands.1=mkdir -p /data/jatin

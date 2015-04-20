@@ -1,0 +1,5 @@
+##########
+# IPs for collectors.
+##########
+ip.filter.input.accept.0=10.168.213.102
+ip.filter.input.accept.1=10.168.213.123

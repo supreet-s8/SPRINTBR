@@ -1,0 +1,9 @@
+#
+# SNMP common configuration
+#
+snmp.server.ip=10.134.213.196
+# Community String
+snmp.server.community=guavus
+# # Site Name
+snmp.server.location=PlymouthMeeting
+snmp.password=Admin123

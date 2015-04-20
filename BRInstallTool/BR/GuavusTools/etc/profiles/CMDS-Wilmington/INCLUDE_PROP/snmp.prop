@@ -1,0 +1,9 @@
+#
+# SNMP common configuration
+#
+snmp.server.1.ip=10.134.213.194
+snmp.server.2.ip=10.136.235.67
+# Community String
+snmp.server.community=atlas
+# # Site Name
+snmp.server.location=Wilmington

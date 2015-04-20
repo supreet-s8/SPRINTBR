@@ -1,0 +1,78 @@
+# rge
+rubix modify-app rge modify-instance 0 set adv-attribute tomcatClusterInfo value "<Member className=\"org.apache.catalina.tribes.membership.StaticMember\" port=\"4010\" host=\"192.168.168.109\" uniqueId=\"{1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1}\"/><Member className=\"org.apache.catalina.tribes.membership.StaticMember\" port=\"4010\" host=\"192.168.168.110\" uniqueId=\"{1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1}\"/><Member className=\"org.apache.catalina.tribes.membership.StaticMember\" port=\"4010\" host=\"192.168.168.111\" uniqueId=\"{1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1}\"/><Member className=\"org.apache.catalina.tribes.membership.StaticMember\" port=\"4010\" host=\"192.168.168.112\" uniqueId=\"{1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1}\"/><Member className=\"org.apache.catalina.tribes.membership.StaticMember\" port=\"4020\" host=\"192.168.168.101\" uniqueId=\"{1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1}\"/>"
+httpd sla-ip 0.0.0.0
+httpd expose-sla-log true
+httpd sla-port 443
+httpd add-cert-file  /data/certificate/br_cert.pem
+httpd add-reverse-proxy /
+httpd add-reverse-proxy rubixbr
+httpd add-reverse-proxy rgebr
+httpd modify-reverse-proxy / address https://rge-br33.guavus.com:9443
+httpd modify-reverse-proxy / url /
+httpd modify-reverse-proxy rubixbr address https://bizreflex-br33.guavus.com:8443
+httpd modify-reverse-proxy rubixbr url /rubixbr
+httpd modify-reverse-proxy rgebr address https://rge-br33.guavus.com:9443
+httpd modify-reverse-proxy rgebr url /rgebr
+httpd SSLCipherSuite HIGH
+httpd SSLProtocol +TLSv1
+web https 13443 port
+rubix add-app rge config-xml /opt/tms/rge-bizreflex3.3/WEB-INF/classes/rgeConfiguration.xml
+rubix modify-app rge add-instance 0
+rubix modify-app rge modify-instance 0 set adv-attribute serverPort value 9005
+rubix modify-app rge modify-instance 0 set adv-attribute connectorPort value 9080
+rubix modify-app rge modify-instance 0 set adv-attribute connectorPortAJP value 9009
+rubix modify-app rge modify-instance 0 set attribute redirectPort value 9443
+rubix modify-app rge modify-instance 0 set attribute ipAddress value 192.168.168.102
+rubix modify-app rge modify-instance 0 set adv-attribute channelReceiverPort value 4010
+rubix modify-app rge modify-instance 0 set attribute docBase value /data/instances/rge/0/app
+rubix modify-app rge modify-instance 0 set adv-attribute sessionCookieDomain value .guavus.com
+rubix modify-app rge modify-instance 0 set adv-attribute JMXPORT value 9089
+rubix modify-app rge modify-instance 0 set adv-attribute tomcatInstanceMaxSize value 10g
+rubix modify-app rge modify-instance 0 set adv-attribute initialJavaHeapSize value 10g
+rubix modify-app rge modify-instance 0 set attribute MAXPERMSIZE value 512m
+rubix modify-app rge modify-instance 0 set attribute runMode value insta
+rubix modify-app rge modify-instance 0 set attribute SKIPUPDATECHECK value true
+rubix modify-app rge modify-instance 0 set attribute JMXAUTHENTICATE value false
+rubix modify-app rge modify-instance 0 set attribute JMXSSL value false
+rubix modify-app rge set attribute applicationPath value /opt/tms/rge-bizreflex3.3
+rubix modify-app rge modify-instance 0 set attribute rgeumDBVersion value 0.0
+rubix modify-app rge modify-instance 0 set attribute rgeapplyServicePermission value false
+rubix modify-app rge modify-instance 0 set attribute rgesolutionDBVersion value 0.0
+rubix modify-app rge modify-instance 0 set attribute rgestaticSecurityManagerEnabledShiroEnv value true
+rubix modify-app rge modify-instance 0 set attribute RGEDEFAULTRUBIXURL value https://bizreflex-br33.guavus.com/rubixbr
+rubix modify-app rge modify-instance 0 set attribute RGEDEFAULTRGEURL value https://rge-br33.guavus.com/rgebr
+rubix modify-app rge modify-instance 0 set attribute rgerubixNumInitialMembers value 2
+rubix modify-app rge modify-instance 0 set attribute rgerubixPortRange value 5
+rubix modify-app rge modify-instance 0 set attribute rgedeployedCustomerName value NTT 
+rubix modify-app rge modify-instance 0 set attribute rgekeyStore value /data/instances/rge/0/app/WEB-INF/classes/keystore
+rubix modify-app rge modify-instance 0 set attribute rgeiReportGenDir value /data/rge/
+rubix modify-app rge modify-instance 0 set attribute rgesuperkey value Admin@123
+rubix modify-app rge modify-instance 0 set attribute rgereportDirectory value /data/instances/rge/0/app/WEB-INF/classes
+rubix modify-app rge modify-instance 0 set attribute RGESLAHOME value /data/instances/rge/0/sla_logs
+rubix modify-app rge modify-instance 0 set attribute rgepojoNameForCustomTablename value IdNameMap;Filter;EntityNameToAsPRIRule;AsProspectRule;AsBlacklistRule;BRConfigurationData;
+rubix modify-app rge modify-instance 0 set attribute rgedialect value com.guavus.rubix.hibernate.dialect.PostgreSQLCustomDialect
+rubix modify-app rge modify-instance 0 set attribute rgeconnectionProviderClass value org.hibernate.connection.C3P0ConnectionProvider
+rubix modify-app rge modify-instance 0 set attribute rgehibernateConnectionUserName value rubix
+rubix modify-app rge modify-instance 0 set attribute rgehibernateConnectionPassword value rubix@123
+rubix modify-app rge modify-instance 0 set attribute rgehibernateConnectionUrl value jdbc:postgresql://192.168.168.114:5432/rge
+rubix modify-app rge modify-instance 0 set attribute rgehibernateConnectionDriverClass value org.postgresql.Driver
+rubix modify-app rge modify-instance 0 set attribute rgehibernateCacheInfinispanCfg value cluster-infinispan-configs.xml
+rubix modify-app rge modify-instance 0 set attribute rgehibernateQueryCache value true
+rubix modify-app rge modify-instance 0 set attribute rgehibernateCacheRegionFactoryClass value org.hibernate.cache.infinispan.InfinispanRegionFactory
+rubix modify-app rge modify-instance 0 set attribute rgehibernateSecondLevelCache value true
+rubix modify-app rge modify-instance 0 set attribute rgecurrentSessionContextClass value thread
+rubix modify-app rge modify-instance 0 set attribute rgedistributedConnectionPassword value rubix@123
+rubix modify-app rge modify-instance 0 set attribute rgedistributedConnectionUserName value rubix
+rubix modify-app rge modify-instance 0 set attribute rgedistributedConnectionUrl value jdbc:postgresql://192.168.168.114:5432/rubix
+rubix modify-app rge modify-instance 0 set attribute rgedistributedConnectionDriverClass value org.postgresql.Driver
+rubix modify-app rge modify-instance 0 set attribute rgeinfinispanJgroupConfigFile value rubix-jgroups.xml
+rubix modify-app rge modify-instance 0 set attribute RgeL2CacheClusterName value rge-cluster-infinipan-new
+rubix modify-app rge modify-instance 0 set attribute rgemapImageDirectory value /data/instances/rge/0/app/WEB-INF/classes/reports/map
+rubix modify-app rge modify-instance 0 set attribute rgerubixInitialHost value  
+rubix modify-app rge modify-instance 0 set attribute rgemailsupport value  
+rubix modify-app rge modify-instance 0 set attribute rgecentralTimeZone value GMT 
+rubix modify-app rge enable
+rubix modify-app rge modify-instance 0 enable
+configuration write
+pm process httpd restart
+pm process rubix restart

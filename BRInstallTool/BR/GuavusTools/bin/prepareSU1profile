@@ -1,0 +1,59 @@
+#!/bin/bash
+
+
+BASEPROF='../etc/profiles'
+CMDSTMPLT='CMDS-atlas3.0.6.rc5-Template_DC'
+echo ""
+# Get profile name
+if [[ ! $1 ]]
+then 
+ PROFILE=""
+ while [[ $PROFILE == '' ]] 
+ do 
+  read -p "Provide the name of the DC profile to be created (This is only the profile name, Hostnames will be requested later):" PROFILE
+ done
+else 
+ PROFILE=$1
+fi
+
+# Create profile directory, exit if already exists.
+if [[ ! -d $BASEPROF/$PROFILE ]]
+then
+ echo "Creating Profile \"$PROFILE\""
+ mkdir -p $BASEPROF/$PROFILE
+ cp -R $BASEPROF/$CMDSTMPLT/* $BASEPROF/$PROFILE/
+ echo "Done...!"
+else
+ echo ""
+ echo "Profile \"$PROFILE\" already exists...!"
+ echo ""
+ ./listprofiles
+ exit
+fi
+
+# Ask DC NAME
+
+echo ""
+DCNAME=""
+while [[ $DCNAME == '' ]]
+do
+  read -p "Provide DC NAME (This will be the complete Distribution center name with no spaces Ex: PlymouthMeeting):" DCNAME
+done
+
+perl -pi -e "s/SANMATEO/$DCNAME/g" $BASEPROF/$PROFILE/INCLUDE_PROP/*
+
+# Ask Hostname Prefix
+
+echo ""
+HOSTPREFIX=""
+while [[ $HOSTPREFIX == '' ]]
+do
+  echo "Provide Hostname PRE-FIX:"
+  read -p "(EXAMPLE: The very first section of the naming convention varies across different sites as the one quoted here: \"WMTPPAAA\"-CMDS-A-AL-GVS09-01):" HOSTPREFIX
+done
+
+find $BASEPROF/$PROFILE -type f -exec perl -pi -e "s/SMLAB/$HOSTPREFIX/g" {} \; 
+
+echo "Created profile $PROFILE"
+./listprofiles $PROFILE
+

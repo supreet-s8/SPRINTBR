@@ -1,0 +1,188 @@
+#!/usr/bin/perl 
+
+use Carp;
+use lib "../lib";
+use BuildHosts;
+use Parse;
+use Oozie;
+use Getopt::Long;
+
+my $DefaultParamsFile = "../etc/system.defaults";
+
+###########################################################################################
+# Setup options
+
+my $password=undef;
+my $propertiesDir=undef;
+my $nodeType="ProvisionDistributionCentre4SAP";
+my $verbose=0;
+my $buildVersion=undef;
+my $profile=undef;
+my $node=undef;
+my $help=undef;
+my $SAPCenter=undef;
+my $output=GetOptions( "propertiesDir:s"	=>      \$propertiesDir,
+		       "profile:s"		=>	\$profile,
+		       "node:s"			=>	\$node,
+                       #"nodeType:s"		=>      \$nodeType,
+		       "SAPCenter:s"		=>	\$SAPCenter,
+		       "buildVersion:s"		=>	\$buildVersion,
+		       "password:s"		=>	\$password,
+		       "verbose"		=>	\$verbose,
+		       "help"			=>	\$help);
+
+if ((! $output) or ($help)) {
+	&usage;
+	exit;
+}
+
+sub usage {
+	print <<EOF
+
+Description: 	Script is used to provision a Distribution Center (DC) to make it capable of sending raw data to the MIDM (SAP) Center for Atlas 2.1 build. Provisioning stands 
+		for pushing out the specific oozie configuration commands to DC.
+Usage:
+
+Provide in the following options.
+
+
+--profile 		(Mandatory)	=> Profile name of Distribution Centre containing properties files.
+
+--node			(Mandatory)	=> Provide IP address of master/standby namenode at Distribution Centre (Properties file must exist under profiles for this namenode).
+
+--SAPCenter		(Mandatory)	=> Provide the VIRTUAL HOSTNAME of MIDM (SAP) Centre for which this DC has to be provisioned.
+
+--propertiesDir				=> Override the default properties file directory path, listed in "system.defaults".
+
+--buildVersion				=> Specify the Atlas build version. It will override the version listed in .prop file of node.
+
+--password				=> Provide in the "admin" user password for the specified node. It will override the one
+					   listed in .prop file of node.
+
+--verbose				=> To enable the verbose mode execution.
+
+EOF
+
+}
+
+#--nodeType		(Mandatory)	=> Specify type of the node. Whether "DistributionCentre" or "AggregationCentre".
+
+
+####################################### MAIN ################################################
+
+my $cmds=undef;
+
+if(! ($node && $SAPCenter && $profile)){
+	&usage();
+	exit;
+
+}
+
+croak "\nError: Invalid node IP specified.\n\n" if (!is_valid($node));
+
+my $baseDir=&getDefaults();
+
+my $cliDir="$baseDir/opt/profiles";
+
+$propertiesDir="$baseDir/etc/profiles" if (! $propertiesDir);
+
+my $cred=&Parse::parse_prop("$propertiesDir/$profile/$node.prop");
+
+if (! $cred) {
+	print "Unable to retrieve properties for specified node.\n";
+	exit;
+}
+
+#die "Not a valid time format! Please try again.\n" if (! &isValidTime($dataStartTime));
+
+$buildVersion=$$cred{version} if (! defined $buildVersion);
+
+#my $collectorComponentCount=$$cred{oozie}{collector}{component}{count};
+
+if (! $password){
+	if ($$cred{user}{admin}{password}{0}) {
+		$password=$$cred{user}{admin}{password}{0};
+	} else {
+		$password=$$cred{user}{admin}{password}{7};
+	}
+}
+	
+			
+$password="" if (! defined $password);
+
+my $version=$buildVersion;
+
+$version=~s/\s//g;
+
+$version=~s/\.//g;
+
+### Done intentionally ### Same config commands for 2.0, 2.1, 2.2 and 3.0 ###
+#$version=21;
+
+my $sub="Atlas"."$version"."_"."$nodeType";
+
+#print "SUB:$sub\n";
+
+#print "\nJob end time attribute \"jobEnd\" will default to the following value for all jobs: $jobEnd\n";
+
+print "\nPreparing to provision Distribution Centre namenode \"$node\" for SAP Center \"$SAPCenter\"...\n";
+
+eval {
+	$cmds=Oozie->$sub($SAPCenter,$cred);
+
+};
+
+croak "\nError encountered! Build version incorrect: $buildVersion\n\nCommitting Exit...!\n$@" if $@;
+
+if (ref $cmds) {
+	print "Done...!\n";
+} else {
+	croak "\nConfession: Oozie job time commands not available for this version at present.\n"; 
+}
+
+print "\nCommands list to be issued on node:\n\n"; 
+
+print "$_\n" foreach(@$cmds);
+
+my $credentials={User		=>	admin,
+		 Password	=>	$password,
+		 IP		=>	$node,
+		 Verbose	=>	$verbose,
+		 CommandList	=>	$cmds
+		};
+
+#print "\nLaunching connection with host: $node\n\n";
+
+my $result = BuildHosts->Build_Host($credentials);
+
+carp "\nERROR : Configuration failed in some way for $node . See Logs for more information\n" unless $ret == 0;
+
+print "\nProcess completed.\n\n";
+
+####################################### Subroutines #######################################
+sub getDefaults {
+
+	my $base="";
+        open (SD, "<$DefaultParamsFile") or carp "Unable to open Default params file :$DefaultParamsFile";
+        while (<SD>) {
+        	my $tmp;
+       		chomp;
+        	next if m/^\s*$/ or m/^\s*#/;
+                ($tmp,$base) = split(/=/, $_) if m/baseDir/i;
+        }
+        return $base;
+}
+sub isValidTime {
+	my $startTime=shift;
+	return $startTime if ($startTime=~(/(\d{4,4})\-(\d{2,2})\-(\d{2,2})T(\d{2,2})\:(\d{2,2})Z/));	
+	return undef;	
+	
+}
+
+sub is_valid {
+	my $IP=shift;
+        chomp $IP;
+        $IP=~s/\s+//g;
+        return 1 if(($IP=~/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/) && ($1<=255) && ($2<=255) && ($3<=255) && ($4<=255));
+        return undef;
+}

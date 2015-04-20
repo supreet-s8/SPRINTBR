@@ -1,0 +1,27 @@
+# Product
+build=Atlas
+# Release
+version=3.0
+
+#####################################################
+# Include Defaults
+#####################################################
+# Following files must exist in the specified Profile
+include=user
+include=snmp
+include=ntp
+include=hostmap
+include=iptablesHadoop
+
+# Configure Hostname
+ip.hostname=WMTPPAAA-CMDS-A-AL-GVS13-02
+
+##########################
+# Interface Configuration
+##########################
+interface.icnb.ip=192.168.0.96
+interface.icnb.subnet=255.255.255.0
+interface.icnb.bond=eth6,eth7
+interface.icnb.comment=Inter Chassis Network
+
+#####################################################################

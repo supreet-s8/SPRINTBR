@@ -1,0 +1,8 @@
+###################################
+# DRBD # Hostnames and IP addresses
+###################################
+drbd.hostone.hostname=cospgvcnp1
+drbd.hostone.ip=10.136.239.41
+drbd.hosttwo.hostname=cospgvcnp2
+drbd.hosttwo.ip=10.136.239.42
+

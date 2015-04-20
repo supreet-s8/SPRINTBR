@@ -1,0 +1,189 @@
+#!/bin/bash
+#
+# gns-format -- create a single ext3 partition on the entire device
+#
+
+OPT_DESTROY=0
+
+OPT_LABEL='msdos'
+HAVE_OPT_LABEL=0
+
+sfdisk='/sbin/sfdisk'
+fdisk='/sbin/fdisk'
+parted='/sbin/parted'
+mkfs="/sbin/mkfs.ext3"
+mkfs_opt='-L guavus'
+id=83
+bootable='*'
+
+die() {
+    echo "FATAL: $*"
+    exit 1
+}
+
+error() {
+    echo "ERROR: $*"
+}
+
+
+usage() {
+    local prog="${0##*/}"
+
+    cat << BIGBANG
+usage: $prog [OPTIONS] DEVICE
+Format a multipath device.
+  -h                    display this help and exit
+  --destroy             erase the partition table and exit (useful in testing)
+  --label-type <type>   possible label types are 'gpt' and 'msdos'. Normally,
+                        this is autodetected and does not have to be given.
+
+Formatting creates a single partition encompassing the whole disk to the
+extent possible and then creates a filesystem on it. Depending on the disk
+size, filesystem creation can take several minutes to finish. So, please
+be patient.
+
+On successful completion a message such as the following will get printed in
+the end:
+
+    Success! Remember to change device name to /dev/mapper/mpath0p1.
+
+It implies that the created filesystem can be accessed via the device node
+/dev/mapper/mpath0p1 and should be used elsewhere, for example, during
+mounting.
+
+WARNING: This tool does not work with gpt labels on non-multipath devices.
+That is, do *not* do the following:
+
+  # $prog --label-type gpt /dev/sde
+
+Example(s):
+
+  # $prog /dev/mapper/mpath0
+BIGBANG
+}
+
+verify_label_type() {
+    local type="$1"
+    local err=1
+
+    case "$type" in
+        msdos | gpt) err=0      ;;
+        *)                      ;;
+    esac
+
+    return $err
+}
+
+auto_detect_label_type() {
+    local device="$1"
+    local size
+
+    # Bash cannot handle very large numbers. So we convert the value to GB.
+    size=$(echo $(blockdev --getsize64 $device) / 2^30 | bc)
+
+    if (( $size > 2000 )); then
+        OPT_LABEL='gpt'
+    else
+        OPT_LABEL='msdos'
+    fi
+
+}
+
+destroy_partition_table() {
+    local device=$1
+    local failure=0
+
+    #
+    # On GPT disks, kpartx can print the following warning when destruction is
+    # done multiple number of times:
+    #
+    #   Warning: Disk has a valid GPT signature but invalid PMBR.
+    #
+    kpartx -d $1 || failure=1
+
+    if (( $failure != 0 )); then
+        error "Failed to remove device map on $device"
+        return $failure
+    fi
+
+    dd if=/dev/zero of=$1 bs=1024 count=64 &>/dev/null || failure=1
+
+    if (( $failure != 0 )); then
+        die "Failed to destroy partition table on $device"
+    fi
+
+    return $failure
+}
+
+make_partition_table() {
+    local label_type=$1
+    local device="$2"
+    local failure=0
+
+    [ -z "$device" ] && die "Device name missing (e.g., /dev/sdb)"
+
+    if [ $label_type == 'msdos' ]; then
+        echo ",,$id,$bootable" | $sfdisk $device > /dev/null 2>&1 || failure=1
+    else
+        $parted -s $device -- mklabel gpt || failure=1
+        (( $failure != 0 )) && die "Couldn't write GPT label."
+
+        $parted -s $device -- unit s mkpart primary ext3 34 -34s || failure=1
+
+        # :KLUDGE: parted sometimes returns non-zero but things continue to be
+        # fine. So, we ignore the exit status.
+        failure=0
+    fi
+    (( $failure != 0 )) && die "Couldn't create partition table on $device"
+
+    kpartx -a $device || failure=1
+    (( $failure != 0 )) && die "Couldn't create device from partition table"
+}
+
+make_fs() {
+    local label_type=$1
+    local device="$2"
+    local partition failure=0
+
+    if [[ $label_type == 'msdos' ]]; then
+        partition=`$fdisk -l $device | grep "^$device" | awk '{print $1}'`
+    else
+        #
+        # parted does not print the device file name, so we have to resort to
+        # this trick.
+        #
+        partition=${device}p1
+        if [[ ! -e $partition ]]; then
+            die "Partition not created: $partition"
+        fi
+
+        if [[ $partition == $device ]]; then
+            die "Partition and device name same is unexpected: $partition."
+        fi
+    fi
+
+    $mkfs $mkfs_opt $partition || failure=1
+    [ $failure -eq 1 ] && die "Could not format $partition on device $device"
+
+    echo "Success! Remember to change device name to $partition."
+}
+
+while (($#)); do
+    case "$1" in
+        -l | --label-type ) shift && HAVE_OPT_LABEL=1 && OPT_LABEL="$1"     ;;
+        -h | --help       ) usage && exit 0                                 ;;
+        --destroy         ) OPT_DESTROY=1                                   ;;
+        -*                ) die "Unknown option $1"                         ;;
+        *                 ) break                                           ;;
+    esac
+    shift
+done
+
+[ `id -u ` -ne 0 ] && die "Required to be root to run this script."
+
+[[ $HAVE_OPT_LABEL == 0 ]] && auto_detect_label_type $1
+verify_label_type "$OPT_LABEL" || die "Unknown label type: $OPT_LABEL"
+destroy_partition_table $1
+[[ $OPT_DESTROY == 1 ]] && exit
+make_partition_table $OPT_LABEL $1
+make_fs $OPT_LABEL $1

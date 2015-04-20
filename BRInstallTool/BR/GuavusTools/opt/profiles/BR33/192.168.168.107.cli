@@ -1,0 +1,54 @@
+# insta
+configure terminal
+insta instance-id create 0
+insta instance 0 cubes-xml /opt/tms/xml_schema/BizreflexCubeDefinition.xml
+insta instance 0 cubes-database br_33
+insta instance 0 service-port 11111
+insta instance 0 dataRetentionPeriod 180
+pm process insta launch environment set LD_LIBRARY_PATH /opt/hadoop/c++/Linux-amd64-64/lib:/usr/java/jre1.6.0_25/lib/amd64/server:/opt/tps/lib:/platform_latest/insta/lib
+pm process insta launch environment set CLASSPATH /opt/tms/java/classes:/opt/hadoop/conf:/opt/hadoop/hadoop-core-0.20.203.0.jar:/opt/hadoop/lib/commons-configuration-1.6.jar:/opt/hadoop/lib/commons-logging-1.1.1.jar:/opt/hadoop/lib/commons-lang-2.4.jar
+pm process insta launch auto
+pm process insta launch relaunch auto
+pm process insta launch enable
+insta adapters infinidb set install-mode multi-server-install
+insta adapters infinidb set module-install-type combined
+insta adapters infinidb username root
+insta adapters infinidb password ""
+insta adapters infinidb cluster-name BRINSTAHA
+insta adapters infinidb set storage-type ext2
+insta adapters infinidb dbroot 1
+insta adapters infinidb dbroot 1 storage-location /dev/mapper/dbroot1
+insta adapters infinidb dbroot 2
+insta adapters infinidb dbroot 2 storage-location /dev/mapper/dbroot2
+insta adapters infinidb dbroot 3
+insta adapters infinidb dbroot 3 storage-location /dev/mapper/dbroot3
+insta adapters infinidb dbroot 4
+insta adapters infinidb dbroot 4 storage-location /dev/mapper/dbroot4
+insta adapters infinidb modulecount 2
+insta adapters infinidb ipaddr 192.168.168.107
+insta adapters infinidb hamgr 192.168.168.114
+insta adapters infinidb module 1
+insta adapters infinidb module 2
+insta adapters infinidb module 1 ip 192.168.168.107
+insta adapters infinidb module 2 ip 192.168.168.108
+insta ipc serviceport 55555
+insta infinidb install
+internal set modify - /nr/insta/instance/0/max_query_interval value uint32 2678400
+internal set modify - /nr/insta/connection_pool_size value uint16 32
+internal set modify - /nr/insta/instance/0/max_outstanding_query  value uint16 16
+internal set modify - /nr/insta/common/infinidb/config/querypoolsize value uint16 8
+write memory
+pm process insta restart
+pmx register pgsql
+tps pgsql dbroot 
+tps pgsql mode external
+tps pgsql restart
+mpio multipaths alias dbroot1 wwid 3600c0ff0001a79f0b326615301000000
+mpio multipaths alias dbroot2 wwid 3600c0ff0001a79f08826615301000000
+mpio multipaths alias dbroot3 wwid 3600c0ff0001a79f0a426615301000000
+mpio multipaths alias dbroot4 wwid 3600c0ff0001a79f0c626615301000000
+internal set modify - /nr/insta/connection_pool_size value uint16 32
+internal set modify - /nr/insta/instance/0/max_outstanding_query  value uint16 16
+internal set modify - /nr/insta/common/infinidb/config/querypoolsize value uint16 8
+write memory
+pm process insta restart

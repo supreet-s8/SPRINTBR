@@ -1,0 +1,76 @@
+####################
+# Hadoop Oozie
+####################
+# For Hadoop Clients, only provide VIP of the name node cluster, 
+hadoop.clients.0=10.136.239.41
+hadoop.clients.1=10.136.239.42
+
+hadoop.slaves.0=10.136.239.43
+hadoop.slaves.1=10.136.239.44
+hadoop.slaves.2=10.136.239.45
+hadoop.slaves.3=10.136.239.46
+hadoop.slaves.4=10.136.239.47
+hadoop.slaves.5=10.136.239.48
+
+# Master is a namenode cluster VIP
+hadoop.master.ip=10.136.239.57
+
+################# AGGREGATION Centre Configuration ####################
+# Provide oozie server to be the VIP address of the Name node cluster
+# Oozie Mandatory
+oozie.collector.component.count=1
+oozie.namenode.vip=10.136.239.57
+oozie.namenode.hostname=cospgvcnp0
+
+# Job details (CubeExporter)
+oozie.job.CubeExporter.name=ExporterJob
+oozie.job.CubeExporter.path=/opt/etc/oozie/CubeExporter
+oozie.job.CubeExporter.attribute.jobFrequency=60
+# Job action attributes
+oozie.job.CubeExporter.action.ExporterAction.attribute.instaHost=10.136.239.59
+oozie.job.CubeExporter.action.ExporterAction.attribute.minTimeout=55
+oozie.job.CubeExporter.action.ExporterAction.attribute.maxTimeout=90
+
+
+# Job details (SubscriberSegment)
+oozie.job.SubscriberSegment.name=SubscriberSegment
+oozie.job.SubscriberSegment.path=/opt/etc/oozie/SubscriberSegment
+oozie.job.SubscriberSegment.attribute.jobFrequency=1
+oozie.job.SubscriberSegment.attribute.frequencyUnit=month
+# Job action attributes
+oozie.job.SubscriberSegment.action.SubSegMapRedAction.attribute.timeout=-1
+
+
+# Job details (CleanupLogs)
+oozie.job.CleanupLogs.name=CleanupLogs
+oozie.job.CleanupLogs.path=/opt/etc/oozie/CleanupLogs
+#oozie.job.CleanupLogs.attribute.jobStart=2012-04-13T00:00Z
+#oozie.job.CleanupLogs.attribute.jobEnd=2099-04-13T00:00Z
+oozie.job.CleanupLogs.attribute.jobFrequency=1
+oozie.job.CleanupLogs.attribute.frequencyUnit=day
+
+# Job details (CleanupAtlas)
+oozie.job.CleanupAtlas.name=CleanupAtlas
+oozie.job.CleanupAtlas.path=/opt/etc/oozie/CleanupAtlas
+#oozie.job.CleanupAtlas.attribute.jobStart=2012-04-13T00:00Z
+#oozie.job.CleanupAtlas.attribute.jobEnd=2099-04-13T00:00Z
+oozie.job.CleanupAtlas.attribute.jobFrequency=1
+oozie.job.CleanupAtlas.attribute.frequencyUnit=day
+
+
+# Job action attributes
+oozie.job.CleanupAtlas.action.CleanupAction.attribute.cleanupOffset=15
+
+# Job details (AggregationJobDaily)
+#oozie.job.AggregationJobDaily.name=HadoopJobWorkflow
+#oozie.job.AggregationJobDaily.path=/opt/etc/oozie/HadoopJob
+#oozie.job.AggregationJobDaily.attribute.jobFrequency=1440
+
+# Dataset attributes
+#oozie.dataset.Cubes_src.attribute.startTime=2012-04-13T00:00Z
+#oozie.dataset.SubcrBytes_src.attribute.startTime=2012-04-13T00:00Z
+#oozie.dataset.SubscriberSegment.attribute.startTime=2012-04-13T00:00Z
+######################################################################
+
+
+##############################################################################

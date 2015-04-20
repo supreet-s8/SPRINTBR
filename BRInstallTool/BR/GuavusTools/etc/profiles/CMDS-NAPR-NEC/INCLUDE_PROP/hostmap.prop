@@ -1,0 +1,33 @@
+# Routing configuration
+#ip.default-gateway=10.168.206.1
+#ip.name-server.1=192.11.11.2
+#ip.name-server.2=2.2.2.2
+
+# Host mappings
+ip.host.vzwlab2cnp1=10.168.212.106
+ip.host.vzwlab2cnp2=10.168.212.114
+ip.host.vzwlab2map1=10.168.212.101
+ip.host.vzwlab2map2=10.168.212.102
+ip.host.vzwlab2map3=10.168.212.103
+ip.host.vzwlab2map4=10.168.212.109
+ip.host.vzwlab2map5=10.168.212.110
+ip.host.vzwlab2map6=10.168.212.111
+ip.host.vzwlab2ccp1=10.168.212.100
+ip.host.vzwlab2ccp2=10.168.212.108
+ip.host.vzwlab2uip1=10.168.212.104
+ip.host.vzwlab2uip2=10.168.212.105
+ip.host.vzwlab2uip3=10.168.212.112
+ip.host.vzwlab2uip4=10.168.212.113
+ip.host.vzwlab2mnp1=10.168.212.107
+ip.host.vzwlab2mnp2=10.168.212.115
+
+# VIPs
+ip.host.vzwlab2cnp0=10.168.212.164
+ip.host.vzwlab2uip0=10.168.212.133
+ip.host.vzwlab2ccp0=10.168.212.167
+
+# Host Mappings External
+
+
+# Turn on/off static host mapping
+ip.map-hostname=no

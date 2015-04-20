@@ -1,0 +1,21 @@
+#
+# Rubix Configuration
+# Community String
+# # Site Name
+rubixui.server.location=PlymouthMeeting
+rubixui.ips.rubix=192.168.168.110,192.168.168.111,192.168.168.112,192.168.168.109
+rubixui.ips1.rubix=192.168.168.109[7900],192.168.168.110[7900],192.168.168.111[7900],192.168.168.112[7900]
+rubixui.ips2.rubix=192.168.168.109[7800],192.168.168.110[7800],192.168.168.111[7800],192.168.168.112[7800]
+rubixui.ips.rge=192.168.168.101,192.168.168.102
+rubixui.port=4010
+rubixui.path=/data/diskstore
+rubixui.heap_size=19g
+rubixui.sol_name=bizreflex
+rubixui.memorary=19g
+rubixui.hostname.node=BR33-RUB2
+rubixui.dbname=rubix
+rubixui.rgeURL=https:g/rge-br33.guavus.com:9443
+rubixui.timezone=GMT
+rubixui.insta.ip=192.168.168.114
+rubixui.insta.port=11111
+rubixui.hostname.all=BR33-RUB1;BR33-RUB2;BR33-RUB3;BR33-RUB4

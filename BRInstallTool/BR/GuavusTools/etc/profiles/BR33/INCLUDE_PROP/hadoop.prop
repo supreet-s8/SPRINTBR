@@ -1,0 +1,8 @@
+#######################
+# Cluster Configuration
+#######################
+hadoop.clients.ip=192.168.168.101,192.168.168.102
+hadoop.clients.interface=eth0
+hadoop.slaves.ip=192.168.168.103,192.168.168.104,192.168.168.105,192.168.168.106
+hadoop.slaves.interface=eth0
+hadoop.master.ip=192.168.168.113

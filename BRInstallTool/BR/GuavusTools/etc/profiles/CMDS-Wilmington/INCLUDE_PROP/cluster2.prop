@@ -1,0 +1,10 @@
+#######################
+# Cluster Configuration
+#######################
+cluster.col2.name=CH2Cluster
+cluster.col2.interface=icnb
+cluster.col2.expected-nodes=2
+cluster.col2.master.address=192.168.0.87
+cluster.col2.master.subnet=255.255.255.0
+cluster.col2.master.interface=icnb
+
