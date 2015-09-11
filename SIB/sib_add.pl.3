@@ -1,0 +1,623 @@
+#!/usr/bin/perl
+ 
+use Data::Dumper;
+
+if ( $#ARGV != 5 )
+{
+        print "\n\t\tusage:  $0 <old_interface_file> <new_interface_file> <new_customer_csv_file> <new_peer_csv_file> <old sib file> <exclude-file>\n\n";
+        exit;
+}
+
+my @old_interface = `diff -biw $ARGV[0] $ARGV[1] | grep \"< \" | sed \'s/< //g\'`;
+my @new_interface = `diff -biw $ARGV[0] $ARGV[1] | grep \"> \" | sed \'s/> //g\'`;
+
+my %sib;
+my %exl;
+
+$sib{'old_interface'} = [@old_interface];
+$sib{'new_interface'} = [@new_interface];
+
+my @line;     # to store all lines into array
+my @int_exclude;   # to store BA/BB/BV psuedo type
+my @int_customer;  # to store BC/BN/BF (type = customer)
+my @int_peer;      # to store BP ( type = Peer)
+
+my @add_list;	# add/update router information
+my @del_list;	# remove router information
+
+$exl_file=$ARGV[5];
+open(EXCLUDE,"<$exl_file") or die $! ;
+
+foreach $line5 (<EXCLUDE>)
+{
+	if ( $line5 =~ m/INTERFACES NOT TO BE DELETED/g ){ $key = "int_not_del"; }
+	if ( $line5 =~ m/AS NOT TO BE DELETED/g ){ $key = "as_not_del"; }
+	if ( $line5 =~ m/ROUTERS NOT TO BE ADDED/g ){ $key = "router_not_add"; }
+	if ( $line5 =~ m/FIX AS MAPPING FOR CUSTOMER AND PEER/g ){ $key = "fix_mapping"; }
+
+	if ( $key eq "int_not_del" && $line5 !~ m/^#/g && $line5 ne "" )
+	{
+		@spl=split(" ",$line5);
+		$line55="$spl[0],$spl[1]:n:b:$spl[2]";
+		push(@{$exl{'sib_not_del'}},$line55);
+	}
+	if ( $key eq "as_not_del" && $line5 !~ m/^#/ && $line5 ne "" )
+	{
+		push(@{$exl{'sib_ui_as_not_del'}},$line5);
+	}
+	if ( $key eq "router_not_add" && $line5 !~ m/^#/ && $line5 ne "" )
+	{
+		push(@{$exl{'sib_ui_router_not_add'}},$line5);
+	}
+	if ( $key eq "fix_mapping" && $line5 !~ m/^#/ && $line5 ne "" )
+	{
+		chomp($line5);
+		push(@{$exl{'ui_fix_mapping'}},$line5);
+	}
+}
+close(EXCLUDE);
+
+# create three array of hash del_int_exclude, del_int_customer, del_int_peer ( old interface file ), sib_del ||||  add_int_exclude, add_int_customer, add_int_peer (new interface file), sib_add
+
+
+foreach $key1 ( keys %sib )
+{
+	foreach $key ( @{$sib{$key1}} )
+	{
+	chomp($key);
+		@line = split(",",$key);
+		if ( $line[5] == 0 ) {$line[5] = 65533; $key=join(",",@line);}
+		if ($line[6] =~ m/BA/ || $line[6] =~ m/BV/)
+		{
+			if ( $key1 eq 'old_interface' ) 
+			{
+			push(@{$sib{'del_int_exclude'}},$key);
+			$sib_entry = "$line[0],$line[3]:n:b:65535";
+			$sib_match=0;
+				foreach $sib_exl (@{$exl{'sib_not_del'}})
+				{
+				chomp($sib_exl);
+					if ( $sib_entry =~ m/$sib_exl/g )
+					{
+						$sib_match=1;
+					}
+				}
+				foreach my $fix_map (@{$exl{'ui_fix_mapping'}})
+                                {
+                                chomp($fix_map);
+                                my($as,$map)=split(":",$fix_map);
+                                        if ($line[5] eq $as && $line[5] != 65533)
+                                        {
+						if ($map eq "customer" && $sib_match != 1)
+                                                        { 
+                                                                $line[6] = "BC";
+                                                                my $mmap=join(",",@line);
+                                                                push(@{$sib{'del_int_customer'}},$mmap);
+                                                        }
+                                                if ($map eq "peer" && $sib_match != 1)
+                                                        { 
+                                                                $line[6] = "BP";
+                                                                my $mmap=join(",",@line);
+                                                                push(@{$sib{'del_int_peer'}},$mmap);
+                                                        }
+                                        }
+                                }	
+			if ( $sib_match != 1 ){push(@{$sib{'del_sib'}},$sib_entry);}
+			}
+			if ( $key1 eq 'new_interface' ) 
+			{
+			$router_match=0;
+				foreach $router_exl (@{$exl{'sib_ui_router_not_add'}})
+				{
+				chomp($router_exl);
+					if ($line[0] =~ m/$router_exl/ )
+					{
+						$router_match=1;
+					}
+				}
+				foreach my $fix_map (@{$exl{'ui_fix_mapping'}})
+                                {
+                                chomp($fix_map);
+                                my($as,$map)=split(":",$fix_map);
+                                        if ($line[5] eq $as && $line[5] != 65533)
+                                        {
+                                                if ($map eq "customer" && $router_match != 1)
+							{ 
+								$line[6] = "BC";
+								my $mmap=join(",",@line);
+                                                		push(@{$sib{'add_int_customer'}},$mmap);
+							}
+                                                if ($map eq "peer" && $router_match != 1)
+							{ 
+								$line[6] = "BP";
+								my $mmap=join(",",@line);
+                                                		push(@{$sib{'add_int_peer'}},$mmap);
+							}
+                                        }
+                                }
+				if ( $router_match != 1 )
+				{
+				push(@{$sib{'add_int_exclude'}},$key);
+				$sib_entry = "$line[0],$line[3]:n:b:65535";
+				push(@{$sib{'add_sib'}},$sib_entry);	
+				}
+			}
+		}
+		elsif ($line[6] =~ m/BC/ || $line[6] =~ m/BF/ )
+		{
+			if ( $key1 eq 'old_interface' ) 
+			{
+			$as_match=0;
+			$del_fix_map_match=0;
+				foreach $as_exl (@{$exl{'sib_ui_as_not_del'}})
+				{
+				chomp($as_exl);
+					if ($line[5] =~ m/$as_exl/g )
+					{
+						$as_match=1;
+					}
+				}	
+				foreach my $fix_map (@{$exl{'ui_fix_mapping'}})
+				{
+				chomp($fix_map);
+				my($as,$map)=split(":",$fix_map);
+					if ($line[5] eq $as )
+					{
+						$del_fix_map_match=1;
+						if ($map eq "customer" && $as_match != 1)
+                                                        { 
+                                                                $line[6] = "BC";
+                                                                my $mmap=join(",",@line);
+                                                                push(@{$sib{'del_int_customer'}},$mmap);
+                                                        }
+                                                if ($map eq "peer" && $as_match != 1)
+                                                        { 
+                                                                $line[6] = "BP";
+                                                                my $mmap=join(",",@line);
+                                                                push(@{$sib{'del_int_peer'}},$mmap);
+                                                        }
+						$sib_entry = "$line[0],$line[3]:c:b:$line[5]";
+						push(@{$sib{'del_sib'}},$sib_entry);	
+					}
+				}
+
+				if ( $as_match != 1 && $del_fix_map_match != 1 )
+				{
+				push(@{$sib{'del_int_customer'}},$key);
+				$sib_entry = "$line[0],$line[3]:c:b:$line[5]";
+				push(@{$sib{'del_sib'}},$sib_entry);	
+				}
+			}
+
+			if ( $key1 eq 'new_interface' ) 
+			{
+				my $router_match=0;
+				my $add_fix_map_match=0;
+                                foreach $router_exl (@{$exl{'sib_ui_router_not_add'}})
+                                {
+				chomp($router_exl);
+                                        if ($line[0] =~ m/$router_exl/g )
+                                        {
+                                                $router_match=1;
+                                        }
+                                }
+				foreach my $fix_map (@{$exl{'ui_fix_mapping'}})
+                                {
+                                chomp($fix_map);
+                                my($as,$map)=split(":",$fix_map);
+                                        if ($line[5] eq $as )
+                                        {
+                                                $add_fix_map_match=1;
+						if ($map eq "customer" && $router_match != 1)
+                                                        { 
+                                                                $line[6] = "BC";
+                                                                my $mmap=join(",",@line);
+                                                                push(@{$sib{'add_int_customer'}},$mmap);
+                                                        }
+                                                if ($map eq "peer" && $router_match != 1)
+                                                        { 
+                                                                $line[6] = "BP";
+                                                                my $mmap=join(",",@line);
+                                                                push(@{$sib{'add_int_peer'}},$mmap);
+                                                        }
+						$sib_entry = "$line[0],$line[3]:c:b:$line[5]";
+                                                push(@{$sib{'add_sib'}},$sib_entry);
+                                        }
+                                }
+                                if ( $router_match != 1 && $add_fix_map_match != 1 )
+                                {
+				push(@{$sib{'add_int_customer'}},$key);
+				$sib_entry = "$line[0],$line[3]:c:b:$line[5]";
+				push(@{$sib{'add_sib'}},$sib_entry);	
+                                }
+
+			}
+		}
+		elsif ($line[6] =~ m/BP/)
+		{
+			if ( $key1 eq 'old_interface' ) 
+			{
+			$as_match=0;
+			$del_fix_map_match=0;
+                                foreach $as_exl (@{$exl{'sib_ui_as_not_del'}})
+                                {
+				chomp($as_exl);
+                                        if ($line[5] =~ m/$as_exl/g )
+                                        {
+                                                $as_match=1;
+                                        }
+                                }
+				foreach my $fix_map (@{$exl{'ui_fix_mapping'}})
+                                {
+                                chomp($fix_map);
+                                my($as,$map)=split(":",$fix_map);
+                                        if ($line[5] eq $as )
+                                        {
+                                                $del_fix_map_match=1;
+						if ($map eq "customer" && $as_match != 1)
+                                                        { 
+                                                                $line[6] = "BC";
+                                                                my $mmap=join(",",@line);
+                                                                push(@{$sib{'del_int_customer'}},$mmap);
+                                                        }
+                                                if ($map eq "peer" && $as_match != 1)
+                                                        { 
+                                                                $line[6] = "BP";
+                                                                my $mmap=join(",",@line);
+                                                                push(@{$sib{'del_int_peer'}},$mmap);
+                                                        }
+						$sib_entry = "$line[0],$line[3]:c:b:$line[5]";
+                                                push(@{$sib{'del_sib'}},$sib_entry);
+                                        }
+                                }
+                                if ( $as_match != 1 && $del_fix_map_match != 1 )
+                                {
+				push(@{$sib{'del_int_peer'}},$key);
+                	        $sib_entry = "$line[0],$line[3]:c:b:$line[5]";
+    		                push(@{$sib{'del_sib'}},$sib_entry);
+                                }
+			}
+
+			if ( $key1 eq 'new_interface' ) 
+			{
+				$router_match=0;
+				$add_fix_map_match=0;
+                                foreach $router_exl (@{$exl{'sib_ui_router_not_add'}})
+                                {
+				chomp($router_exl);
+                                        if ($line[0] =~ m/$router_exl/g )
+                                        {
+                                                $router_match=1;
+                                        }
+                                }
+				foreach my $fix_map (@{$exl{'ui_fix_mapping'}})
+                                {
+                                chomp($fix_map);
+                                my($as,$map)=split(":",$fix_map);
+                                        if ($line[5] eq $as )
+                                        {
+                                                $add_fix_map_match=1;
+						if ($map eq "customer" && $router_match != 1)
+                                                        { 
+                                                                $line[6] = "BC";
+                                                                my $mmap=join(",",@line);
+                                                                push(@{$sib{'add_int_customer'}},$mmap);
+                                                        }
+                                                if ($map eq "peer" && $router_match != 1)
+                                                        { 
+                                                                $line[6] = "BP";
+                                                                my $mmap=join(",",@line);
+                                                                push(@{$sib{'add_int_peer'}},$mmap);
+                                                        }
+						$sib_entry = "$line[0],$line[3]:c:b:$line[5]";
+                                                push(@{$sib{'add_sib'}},$sib_entry);
+                                        }
+                                }
+                                if ( $router_match != 1 && $add_fix_map_match != 1 )
+                                {
+				push(@{$sib{'add_int_peer'}},$key);
+				$sib_entry = "$line[0],$line[3]:c:b:$line[5]";
+				push(@{$sib{'add_sib'}},$sib_entry);	
+                                }
+			}
+		}
+		elsif ($line[6] =~ m/BN/)
+		{
+			if ( $key1 eq 'old_interface' ) 
+			{
+			$as_match=0;
+			$del_fix_map_match=0;
+                                foreach $as_exl (@{$exl{'sib_ui_as_not_del'}})
+                                {
+				chomp($as_exl);
+                                        if ($line[5] =~ m/$as_exl/g )
+                                        {
+                                                $as_match=1;
+                                        }
+                                }
+                                if ( $as_match != 1 )
+                                {
+				push(@{$sib{'del_int_cp_BN'}},$key);
+                	        $sib_entry = "$line[0],$line[3]:c:b:65535";
+    		                push(@{$sib{'del_sib_BN'}},$sib_entry);
+                                }
+			}
+
+			if ( $key1 eq 'new_interface' ) 
+			{
+				$router_match=0;
+				$add_fix_map_match=0;
+                                foreach $router_exl (@{$exl{'sib_ui_router_not_add'}})
+                                {
+				chomp($router_exl);
+                                        if ($line[0] =~ m/$router_exl/g )
+                                        {
+                                                $router_match=1;
+                                        }
+                                }
+                                if ( $router_match != 1 )
+                                {
+				push(@{$sib{'add_int_cp_BN'}},$key);
+				$sib_entry = "$line[0],$line[3]:c:b:65535";
+				push(@{$sib{'add_sib_BN'}},$sib_entry);	
+                                }
+			}
+		}
+	}
+}
+
+my $sorted_add = join("\n",@{$sib{'add_sib_BN'}});
+my $bn_uniq_add = `echo "$sorted_add" | sort -n| uniq`;chomp($bn_uniq_add);
+@{$sib{'add_sib_BN'}} = split("\n",$bn_uniq_add);
+push(@{$sib{'add_sib'}},@{$sib{'add_sib_BN'}});
+
+my $sorted_del = join("\n",@{$sib{'del_sib_BN'}});
+my $bn_uniq_del = `echo "$sorted_del" | sort -n| uniq`;chomp($bn_uniq_del);
+@{$sib{'del_sib_BN'}} = split("\n",$bn_uniq_del);
+push(@{$sib{'del_sib'}},@{$sib{'del_sib_BN'}});
+
+
+
+#print Dumper \%sib;
+#print Dumper \%exl;
+
+#exit();
+####### prepare file_add.sh which contains entries to add in NTT, prepare file_del.sh which contains entries to delete in NTT
+
+
+open(DELETE,">file_del.sh") or die $! ;
+open(ADD,">file_add.sh") or die $! ;
+open(CUSTOMER,"<$ARGV[2]") or die $! ;
+open(PEER,"<$ARGV[3]") or die $! ;
+
+@cu_check=<CUSTOMER>;
+@pr_check=<PEER>;
+
+foreach $key1 ( keys %sib )
+{
+	if ( $key1 =~ m/_int_customer/ || $key1 =~ m/_int_peer/ )
+	{
+
+	foreach $customer (@{$sib{$key1}})
+	{
+		my @cus = split(",",$customer);
+		my $router;
+		($router) = $cus[0] =~ m/.([a-z]+)/;
+		$router =~ s/^([a-z])/\u$1/;
+		$cus[0] =~ s/^([a-z])/\u$1/;
+		$cus[1] =~ s/^([a-z])/\u$1/;
+		#$asn = $cus[5];
+		if ($key1 eq 'del_int_customer') 
+		{
+		$getname = `cd /opt/samples/ip-solutions-config/rubix/; /opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -G -t 1 --asn $cus[5] 2>/dev/null| head -1;cd - > /dev/null`;
+		chomp($getname);
+		if($getname =~ m/Fail:/){ print "\n$getname\n";exit;}
+		$getname =~ s/^<//g;
+		$getname =~ s/>$//g;
+		$getname =~ s/^-*//g;
+		$getname =~ s/-*$//g;
+		$getname =~ s/^\s+//g;
+		if ($getname eq ""){$list="\"$router:$cus[0]:$cus[3]:$cus[1]\" rule can't be deleted because entity $cus[4] doesn't exists\n";}
+		else {$list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -U -t 1 --en \"$getname\" --deleterules \"$router:$cus[0]:$cus[3]:$cus[1]\"\n";}
+
+		#my $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -U -t 1 --en \"$cus[4]\" --deleterules \"$router:$cus[0]:$cus[3]:$cus[1]\"\n";
+		print DELETE $list;
+		}
+
+		if ($key1 eq 'add_int_customer') 
+		{
+		$getname = `cd /opt/samples/ip-solutions-config/rubix/; /opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -G -t 1 --asn $cus[5] 2>/dev/null | head -1;cd - > /dev/null`;
+		chomp($getname);
+		if($getname =~ m/Fail:/){print "\n$getname\n";exit;}
+		$getname =~ s/^<//g;
+                $getname =~ s/>$//g;
+                $getname =~ s/^-*//g;
+                $getname =~ s/-*$//g;
+		$getname =~ s/^\s+//g;
+		#if ($getname eq ""){ $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -A -t 1 --en \"$cus[4]\" --asn \"$cus[5]\" --pri \"$router:$cus[0]:$cus[3]:$cus[1]\"\n";}
+
+#####gaurav
+		if ($getname eq ""){ $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --UI --user=admin --passwd=Admin\@123 --ics=\"$cus[3],$cus[1],$cus[0],$cus[5],b,Customer Facing,,$cus[4]\"\n";}
+		
+		#else { $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -U -t 1 --en \"$getname\" --addrules \"$router:$cus[0]:$cus[3]:$cus[1]\"\n";}
+#####gaurav
+
+		elsif ($getname eq "NTT-UNKNOWN-AS"){$list="/opt/samples/ip-solutions-config/rubix/entitycli.py --UI --user=admin --passwd=Admin\@123 --ics=\"$cus[3],$cus[1],$cus[0],65533,b,Customer Facing,,$getname\"\n";}
+		else { $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --UI --user=admin --passwd=Admin\@123 --ics=\"$cus[3],$cus[1],$cus[0],$cus[5],b,Customer Facing,,$getname\"\n";}
+
+		#my $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -U -t 1 --en \"$cus[4]\" --addrules \"$router:$cus[0]:$cus[3]:$cus[1]\"\n";
+		print ADD $list;
+		}
+	}
+
+	foreach $peer (@{$sib{$key1}})
+	{
+		my @pr = split(",",$peer);
+		my $router;
+		($router) = $pr[0] =~ m/.([a-z]+)/;
+		$router =~ s/^([a-z])/\u$1/;
+                $pr[0] =~ s/^([a-z])/\u$1/;
+                $pr[1] =~ s/^([a-z])/\u$1/;
+		#$asn_peer = $pr[5];
+		if ($key1 eq 'del_int_peer')
+		{
+		$getname = `cd /opt/samples/ip-solutions-config/rubix/; /opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -G -t 2 --asn $pr[5] 2>/dev/null| head -1; cd - > /dev/null`;
+		chomp($getname);
+		if($getname =~ m/Fail:/){print "\n$getname\n";exit;}
+		$getname =~ s/^<//g;
+                $getname =~ s/>$//g;
+                $getname =~ s/^-*//g;
+                $getname =~ s/-*$//g;
+		$getname =~ s/^\s+//g;
+		if ($getname eq ""){ $list="\"$router:$pr[0]:$pr[3]:$pr[1]\" rule can't be deleted because entity $pr[4] doesn't exists\n";}
+		else{$list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -U -t 2 --en \"$getname\" --deleterules \"$router:$pr[0]:$pr[3]:$pr[1]\"\n";}
+
+		#my $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -U -t 2 --en \"$pr[4]\" --deleterules \"$router:$pr[0]:$pr[3]:$pr[1]\"\n";
+		print DELETE $list;
+		}
+
+		if ($key1 eq 'add_int_peer')
+		{
+		$getname = `cd /opt/samples/ip-solutions-config/rubix/; /opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -G -t 2 --asn $pr[5] 2>/dev/null| head -1; cd - > /dev/null`;
+		chomp($getname);
+		if($getname =~ m/Fail:/){print "\n$getname\n";exit;}
+		$getname =~ s/^<//g;
+                $getname =~ s/>$//g;
+                $getname =~ s/^-*//g;
+                $getname =~ s/-*$//g;
+		$getname =~ s/^\s+//g;
+		#if ($getname eq ""){ $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -A -t 2 --en \"$pr[4]\" --asn \"$pr[5]\" --pri \"$router:$pr[0]:$pr[3]:$pr[1]\"\n";}
+
+#####gaurav
+		if ($getname eq ""){ $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --UI --user=admin --passwd=Admin\@123 --ics=\"$pr[3],$pr[1],$pr[0],$pr[5],b,Peer Facing,,$pr[4]\"\n";}
+
+		elsif ($getname eq "NTT-UNKNOWN-AS"){$list="/opt/samples/ip-solutions-config/rubix/entitycli.py --UI --user=admin --passwd=Admin\@123 --ics=\"$pr[3],$pr[1],$pr[0],65533,b,Peer Facing,,$getname\"\n";}
+		#else { $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -U -t 2 --en \"$getname\" --addrules \"$router:$pr[0]:$pr[3]:$pr[1]\"\n";}
+		else { $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --UI --user=admin --passwd=Admin\@123 --ics=\"$pr[3],$pr[1],$pr[0],$pr[5],b,Peer Facing,,$getname\"\n";;}
+
+		#my $list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -U -t 2 --en \"$pr[4]\" --addrules \"$router:$pr[0]:$pr[3]:$pr[1]\"\n";
+		print ADD $list;
+		}
+	}
+	}
+
+	if ( $key1 =~ m/add_int_cp_BN/ )
+	{
+	foreach $entry (@{$sib{$key1}})
+	{
+		my @cus = split(",",$entry);
+		my @cu_match = grep /^$cus[5]$/, @cu_check;
+		chomp(@cu_match);
+			if(@cu_match)
+			{
+				$getname = `cd /opt/samples/ip-solutions-config/rubix/; /opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -G -t 2 --asn $cus[5] 2>/dev/null| head -1;cd - > /dev/null`;
+				chomp($getname);
+				if($getname =~ m/Fail:/){ print "\n$getname\n";exit;}
+				$getname =~ s/^<//g;
+				$getname =~ s/>$//g;
+				$getname =~ s/^-*//g;
+				$getname =~ s/-*$//g;
+				$getname =~ s/^\s+//g;
+				if ( $getname ne "" )
+				{
+				$list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -D -t 2 --en \"$getname\" --asn \"$cus[5]\"\n";
+				print DELETE $list;
+				}
+			
+				$getname = `cd /opt/samples/ip-solutions-config/rubix/; /opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -G -t 1 --asn $cus[5] 2>/dev/null| head -1;cd - > /dev/null`;
+				chomp($getname);
+                                if($getname =~ m/Fail:/){ print "\n$getname\n";exit;}
+                                $getname =~ s/^<//g;
+                                $getname =~ s/>$//g;
+                                $getname =~ s/^-*//g;
+                                $getname =~ s/-*$//g;
+                                $getname =~ s/^\s+//g;
+                                if ($getname eq "")
+				{
+				$list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -A -t 1 --en \"$cus[4]\" --asn \"$cus[5]\"\n";
+				print ADD $list;
+				}
+			}
+		
+                my @peer_match = grep /^$cus[5]$/, @pr_check;
+                chomp(@peer_match);
+                        if(@peer_match)
+                        {
+                                $getname = `cd /opt/samples/ip-solutions-config/rubix/; /opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -G -t 1 --asn $cus[5] 2>/dev/null| head -1;cd - > /dev/null`;
+                                chomp($getname);
+                                if($getname =~ m/Fail:/){ print "\n$getname\n";exit;}
+                                $getname =~ s/^<//g;
+                                $getname =~ s/>$//g;
+                                $getname =~ s/^-*//g;
+                                $getname =~ s/-*$//g;
+                                $getname =~ s/^\s+//g;
+                                if ($getname ne "")
+                                {                                
+				$list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -D -t 1 --en \"$getname\" --asn \"$cus[5]\"\n";
+                                print DELETE $list;
+                                }
+                                
+                                $getname = `cd /opt/samples/ip-solutions-config/rubix/; /opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -G -t 2 --asn $cus[5] 2>/dev/null| head -1;cd - > /dev/null`;
+                                chomp($getname);
+                                if($getname =~ m/Fail:/){ print "\n$getname\n";exit;}
+                                $getname =~ s/^<//g;
+                                $getname =~ s/>$//g;
+                                $getname =~ s/^-*//g;
+                                $getname =~ s/-*$//g;
+                                $getname =~ s/^\s+//g;
+                                if ($getname eq "")
+                                {                                
+				$list="/opt/samples/ip-solutions-config/rubix/entitycli.py --user admin --passwd Admin1234 -A -t 2 --en \"$cus[4]\" --asn \"$cus[5]\"\n";
+                                print ADD $list;
+                                }
+                        }
+
+	}
+	}
+
+}	
+close(DELETE);
+close(ADD);
+
+############ Modification in SIB file to add new sib entries and delete old sib entries
+
+open(SIB,"<$ARGV[4]") or die $! ;
+open(SIBOUT,">sib_out.txt") or die $!;
+
+foreach $sib_line (<SIB>)
+{
+$m=0;
+	foreach $sib_del (@{$sib{'del_sib'}})
+	{
+		if ( $sib_line =~ m/$sib_del/)
+		{
+			$m=1;
+		}	
+	}
+	if ( $m != 1 ) { print SIBOUT $sib_line; } 
+}
+
+foreach $sib_add (@{$sib{'add_sib'}})
+{
+$m=0;
+	foreach $sib_line (<SIB>)
+	{
+		if ( $sib_add =~ m/$sib_line/ )
+		{
+			$m=1;
+		}
+	}
+	if ( $m != 1 ) { print SIBOUT "$sib_add\n"; }
+}
+
+close(SIB);
+close(SIBOUT);
+print "\n\tRouter delete commands are in file_del.sh";
+print "\n\tRouter add commands are in file_add.sh";
+print "\n\tNew SIB file is:\t sib_out.txt\n\n";
+#system("/usr/bin/perl update_rule.pl");
+
+#print Dumper \%sib;
+#print Dumper \@{$sib{'add_sib'}};
+#print @del_list;
+#print @add_list;
